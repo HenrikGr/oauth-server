@@ -23,21 +23,21 @@ npm i @hgc-ab/authorization-service
 This package uses .env variable to set;
 - the connection string to the database,
 - endpoint URI's,
-- and debug flag
+- and debug flag,
+- port he server listen to.
+
+The default setting are shown below, you can override it with our own.
 
 
 ```shell script
 # Set any value to enforce debugging
 DEBUG=true
+PORT=6001
 MONGO_DB_URI=mongodb://localhost:27017/auth?readPreference=primary&ssl=false
 ENDPOINT_ROOT=/oauth
 ENDPOINT_TOKEN=/tokens
 ENDPOINT_AUTHORIZE=/authorize
 ```
-
-The services uses default endpoints such as;
-- /oauth/tokens
-- /oauth/authorize
 
 Note: .env files requires that you load them as early in your code as possible, see example below.
 
