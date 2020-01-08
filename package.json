@@ -1,11 +1,11 @@
 {
-  "name": "@hgc-ab/authorizarion-service",
-  "version": "1.0.4",
+  "name": "@hgc-ab/authorization-service",
+  "version": "1.0.1",
   "main": "index.js",
   "author": "Henrik Grönvall <hgc-ab@outlook.com>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/henrikgr/authorizarion-service"
+    "url": "git://github.com/henrikgr/authorization-service"
   },
   "keywords": [
     "authorization service",
