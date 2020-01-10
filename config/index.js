@@ -1,4 +1,4 @@
-/*
+/**
  * @prettier
  * @copyright (c) 2019 - present, HGC-AB
  * @licence This source code is licensed under the MIT license described and found in the
@@ -7,7 +7,6 @@
 
 require('dotenv').config()
 const pkg = require('../package')
-
 const oAuthConfig = require('../server/config')
 
 /**
@@ -17,7 +16,7 @@ const oAuthConfig = require('../server/config')
 const config = {
   appName: pkg.name,
   version: pkg.version,
-  port: process.env.PORT || 6001,
+  port: process.env.OAUTH_PORT || 6001,
   debug: !!process.env.DEBUG,
   environment: process.env.NODE_ENV || 'development',
   oAuthConfig: oAuthConfig

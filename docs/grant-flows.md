@@ -1,9 +1,12 @@
-# HGC Oauth 2
-An oauth 2 server implementation that supports grants such as;
+# The authorization service
+
+This package supports the following grant flows.
 - password
 - refresh_token
 - client_credential
 - authorization code
+
+Each grant flow invoke different functions in the model.
 
 # Request password grant type
 - getClient,

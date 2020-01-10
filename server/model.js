@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { oauth } = require('@hgc-ab/db-repositories')
+const oauth = require('../model')
 
 /**
  * Model to inject into the oauth server

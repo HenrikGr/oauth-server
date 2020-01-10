@@ -7,6 +7,10 @@
 
 const { NotFound, InternalServerError } = require('./errors')
 
+/**
+ * Load express error handler
+ * @param app
+ */
 module.exports = function(app) {
 
   /**

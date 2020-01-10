@@ -5,7 +5,7 @@
 [![MIT License](https://img.shields.io/npm/l/@hgc-ab/authorization-service.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 # Authorization package 
-The package contain an authorization service providing OAuth2 grant flows to authorize a user.
+The package contain an authorization service providing OAuth2 grant flows.
 
 The grant flows supported today are;
 - password
@@ -20,23 +20,30 @@ Install
 npm i @hgc-ab/authorization-service
 ```
 
-This package uses .env variable to set;
-- the connection string to the database,
-- endpoint URI's,
-- and debug flag,
-- port he server listen to.
-
-The default setting are shown below, you can override it with our own.
-
+This package uses .env variable and the default setting are shown below.
 
 ```shell script
 # Set any value to enforce debugging
 DEBUG=true
-PORT=6001
-MONGO_DB_URI=mongodb://localhost:27017/auth?readPreference=primary&ssl=false
+
+# Specify environment, development, production, test, etc
+NODE_ENV=development
+
+# Override deault connection string to the db cloud service
+DB_CONNECTION_URI=mongodb://localhost:27017/auth?readPreference=primary&ssl=false
+
+# Override deault port for the authorization server
+OAUTH_PORT=6001
+
+# Oauth 2 Endpoints
 ENDPOINT_ROOT=/oauth
 ENDPOINT_TOKEN=/tokens
 ENDPOINT_AUTHORIZE=/authorize
+
+# Lifetiem for tokens
+accessTokenLifetime=1800
+refreshTokenLifetime=86400
+
 ```
 
 Note: .env files requires that you load them as early in your code as possible, see example below.

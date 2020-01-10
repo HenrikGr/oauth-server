@@ -7,7 +7,6 @@
 
 /**
  * Configuration fo the oauth server
- * @type {{endpoints: {root: string, profile: string, authorize: string, token: string}, authorizeOptions: {authorizationCodeLifetime: number, accessTokenLifetime: number}, tokenOptions: {requireClientAuthentication: {refresh_token: boolean, password: boolean}, refreshTokenLifetime: number, accessTokenLifetime: number}}}
  */
 const oAuthConfig = {
   endpoints: {
@@ -16,9 +15,8 @@ const oAuthConfig = {
     authorize: process.env.ENDPOINT_AUTHORIZE || '/authorize',
   },
   tokenOptions: {
-    accessTokenLifetime: 1800,
-    refreshTokenLifetime: 86400,
-    // Allow token requests using the password grant to not include a client_secret.
+    accessTokenLifetime: process.env.accessTokenLifetime || 1800,
+    refreshTokenLifetime: process.env.refreshTokenLifetime || 86400,
     requireClientAuthentication: {
       password: true,
       refresh_token: true

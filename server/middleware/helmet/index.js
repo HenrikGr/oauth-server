@@ -6,6 +6,11 @@
  */
 const helmet = require('helmet')
 
-module.exports = function(app, config) {
+/**
+ * Load helmet to express
+ * @param app
+ * @param appConfig
+ */
+module.exports = function(app, appConfig) {
   app.use(helmet())
 }

@@ -7,7 +7,12 @@
 
 const bodyParser = require('body-parser')
 
-module.exports = function(app, config) {
+/**
+ * Load body parser to express
+ * @param app
+ * @param appConfig
+ */
+module.exports = function(app, appConfig) {
 
   // parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: false }))

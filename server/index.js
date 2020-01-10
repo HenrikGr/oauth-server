@@ -5,14 +5,24 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const Server = require('oauth2-server')
-const { Request, Response } = Server
-const model = require('./model')
+const { token, authorize, authenticate } = require('./handlers')
+const router = require('express').Router()
 
-const oAuth2Server = new Server({ model })
+/**
+ * Set up routes and connect the router with express
+ * @param app
+ * @param appConfig
+ */
+module.exports = function(app, appConfig) {
+  const { oAuthConfig } = appConfig
+  const { endpoints, tokenOptions, authorizeOptions } = oAuthConfig
 
-module.exports = {
-  oAuth2Server,
-  Request,
-  Response
+  router.route(endpoints.token).post(token(tokenOptions))
+
+  router
+    .route(endpoints.authorize)
+    .get(authorize(authorizeOptions))
+    .post(authorize(authorizeOptions))
+
+  app.use(oAuthConfig.endpoints.root, router)
 }

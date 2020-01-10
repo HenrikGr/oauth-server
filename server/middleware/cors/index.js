@@ -6,7 +6,12 @@
  */
 const cors = require('cors')
 
-module.exports = function(app, config) {
+/**
+ * Load cors to express
+ * @param app
+ * @param appConfig
+ */
+module.exports = function(app, appConfig) {
 
   app.use(cors())
 }
