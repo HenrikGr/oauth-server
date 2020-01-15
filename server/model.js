@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const oauth = require('../model')
+const oauth = require('../db')
 
 /**
  * Model to inject into the oauth server
  */
-const model = {
+module.exports = {
   getClient: (clientId, clientSecret) => {
     return oauth.getClient(clientId, clientSecret)
   },
@@ -48,5 +48,3 @@ const model = {
     return oauth.verifyScope(token, scope)
   }
 }
-
-module.exports = model

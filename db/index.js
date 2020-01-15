@@ -6,8 +6,8 @@
  */
 
 const debugService = require('../debugService')
-const { connectCollection } = require('../db/mongo/connectionService')
-const Oauth2Model = require('./Oauth2Model')
+const { connectCollection } = require('./mongo/connectionService')
+const Oauth2Model = require('./mongo/model/Oauth2Model')
 
 // Inject services to be used in the model
 const oauth2Dependencies = {

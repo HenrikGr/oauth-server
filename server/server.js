@@ -9,9 +9,12 @@ const Server = require('oauth2-server')
 const { Request, Response } = Server
 const model = require('./model')
 
-
-const oAuth2Server = new Server({ model })
-console.log('new instance')
+// noinspection JSCheckFunctionSignatures
+/**
+ *
+ * @type {OAuth2Server}
+ */
+const oAuth2Server = new Server({ model: model })
 
 module.exports = {
   oAuth2Server,

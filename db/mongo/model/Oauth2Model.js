@@ -52,7 +52,7 @@ class Oauth2Model {
         scope: client.scope,
         redirectUris: client.redirectUris,
         grants: client.grants,
-        user: client.user
+        user: client.username
       }
 
       this._debugService('getClient: result', result)
@@ -117,7 +117,7 @@ class Oauth2Model {
   async getUserFromClient(client) {
     try {
       // Create query
-      let query = { _id: client.user }
+      let query = { username: client.user }
 
       // Fetch the collection
       let collection = await this._connectCollection('users')
@@ -165,10 +165,10 @@ class Oauth2Model {
       let data = {
         accessToken: token.accessToken,
         accessTokenExpiresAt: token.accessTokenExpiresAt,
-        client: client._id,
-        user: user._id,
+        client: client.name,
+        username: user.username,
         scope: token.scope,
-        updateAt: new Date(),
+        updatedAt: new Date(),
         createdAt: new Date()
       }
 
@@ -182,10 +182,10 @@ class Oauth2Model {
         let data = {
           refreshToken: token.refreshToken,
           refreshTokenExpiresAt: token.refreshTokenExpiresAt,
-          client: client._id,
-          user: user._id,
+          client: client.name,
+          username: user.username,
           scope: token.scope,
-          updateAt: new Date(),
+          updatedAt: new Date(),
           createdAt: new Date()
         }
 
@@ -222,16 +222,16 @@ class Oauth2Model {
           {
             $lookup: {
               from: 'clients',
-              localField: 'client.str',
-              foreignField: '_id.str',
+              localField: 'client',
+              foreignField: 'name',
               as: 'client_docs'
             }
           },
           {
             $lookup: {
               from: 'users',
-              localField: 'user.str',
-              foreignField: '_id.str',
+              localField: 'username',
+              foreignField: 'username',
               as: 'user_docs'
             }
           }
@@ -287,16 +287,16 @@ class Oauth2Model {
           {
             $lookup: {
               from: 'clients',
-              localField: 'client.str',
-              foreignField: '_id.str',
+              localField: 'client',
+              foreignField: 'name',
               as: 'client_docs'
             }
           },
           {
             $lookup: {
               from: 'users',
-              localField: 'user.str',
-              foreignField: '_id.str',
+              localField: 'username',
+              foreignField: 'username',
               as: 'user_docs'
             }
           }
