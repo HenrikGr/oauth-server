@@ -1,10 +1,10 @@
-# @hgc-ab/authorization-service
+# @hgc-ab/oauth-server
 
-[![version](https://img.shields.io/npm/v/@hgc-ab/authorization-service.svg?style=flat-square)](http://npm.im/@hgc-ab/authorization-service)
-[![downloads](https://img.shields.io/npm/dm/@hgc-ab/authorization-service.svg?style=flat-square)](http://npm-stat.com/charts.html?package=@hgc-ab/authorization-service&from=2020-01-07)
-[![MIT License](https://img.shields.io/npm/l/@hgc-ab/authorization-service.svg?style=flat-square)](http://opensource.org/licenses/MIT)
+[![version](https://img.shields.io/npm/v/@hgc-ab/oauth-server.svg?style=flat-square)](http://npm.im/@hgc-ab/oauth-server)
+[![downloads](https://img.shields.io/npm/dm/@hgc-ab/oauth-server.svg?style=flat-square)](http://npm-stat.com/charts.html?package=@hgc-ab/oauth-server&from=2020-01-22)
+[![MIT License](https://img.shields.io/npm/l/@hgc-ab/oauth-server.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
-# Authorization package 
+# oauth-server package 
 The package contain an authorization service providing OAuth2 grant flows.
 
 The grant flows supported today are;
