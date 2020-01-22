@@ -5,7 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { oAuth2Server, Request, Response } = require('./server')
+const Server = require('oauth2-server')
+const { Request, Response } = Server
+const model = require('./model')
+
+// noinspection JSCheckFunctionSignatures
+/**
+ *
+ * @type {OAuth2Server}
+ */
+const oAuth2Server = new Server({ model: model })
 
 /**
  * Token handler for the token endpoint
@@ -78,8 +87,9 @@ function authenticate(options) {
   }
 }
 
+
 module.exports = {
-  token: token,
-  authorize: authorize,
-  authenticate: authenticate
+  token,
+  authorize,
+  authenticate
 }

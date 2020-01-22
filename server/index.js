@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { token, authorize, authenticate } = require('./handlers')
+const { token, authorize, authenticate } = require('./oAuthServer')
 const router = require('express').Router()
 
 /**

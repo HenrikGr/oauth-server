@@ -50,10 +50,7 @@ Note: .env files requires that you load them as early in your code as possible, 
 
 ```javascript
 require('dotenv').config()
-const server = require('@hgc-ab/authorization-service')
-
-// Export your authorization service
-module.exports = server
+const oAuthServer = require('@hgc-ab/oauth-server')
 
 ```
 

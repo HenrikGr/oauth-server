@@ -111,7 +111,3 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 !/.env
-!/db/mongo/connectionService/localdev-config.json
-!/server/
-!/oauth-server.js
-!/.env
