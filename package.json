@@ -1,6 +1,6 @@
 {
   "name": "@hgc-ab/oauth-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "author": "Henrik Grönvall <hgc-ab@outlook.com>",
   "repository": {
