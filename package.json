@@ -15,7 +15,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "build": "npm install"
+    "build": "npm install",
+    "test": "echo \"No test specified\""
   },
   "dependencies": {
     "@hgc-ab/db-repositories": "^1.0.13",
