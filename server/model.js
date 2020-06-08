@@ -5,7 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const oauth = require('../db')
+const { dao, repos } = require('@hgc-ab/db-repositories')()
+const { UserDao, ClientDao, AccessTokenDao, RefreshTokenDao } = dao
+const { Oauth2Repository } = repos
+
+/**
+ * Use the Oauth2Repository
+ * - create dependent DAO instances
+ * - create Oauth2Repository instance
+ */
+const userDao = new UserDao('auth', 'users')
+const clientDao = new ClientDao('auth', 'clients')
+const accessTokenDao = new AccessTokenDao('auth', 'access_tokens')
+const refreshTokenDao = new RefreshTokenDao('auth', 'refresh_tokens')
+const oauth = new Oauth2Repository(userDao, clientDao, accessTokenDao, refreshTokenDao)
 
 /**
  * Model to inject into the oauth server

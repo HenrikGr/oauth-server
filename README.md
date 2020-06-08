@@ -4,7 +4,7 @@
 [![downloads](https://img.shields.io/npm/dm/@hgc-ab/oauth-server.svg?style=flat-square)](http://npm-stat.com/charts.html?package=@hgc-ab/oauth-server&from=2020-01-22)
 [![MIT License](https://img.shields.io/npm/l/@hgc-ab/oauth-server.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
-# oauth-server package 
+# Purpose 
 The package contain an authorization service providing OAuth2 grant flows.
 
 The grant flows supported today are;
@@ -17,32 +17,20 @@ The grant flows supported today are;
 Install
 
 ```shell script
-npm i @hgc-ab/authorization-service
+npm i @hgc-ab/oauth-server
 ```
 
 This package uses .env variable and the default setting are shown below.
 
 ```shell script
-# Set any value to enforce debugging
-DEBUG=true
+# Set value to enforce debugging
+DEBUG=@hgc-ab/*
 
 # Specify environment, development, production, test, etc
 NODE_ENV=development
 
-# Override deault connection string to the db cloud service
-DB_CONNECTION_URI=mongodb://localhost:27017/auth?readPreference=primary&ssl=false
-
-# Override deault port for the authorization server
-OAUTH_PORT=6001
-
-# Oauth 2 Endpoints
-ENDPOINT_ROOT=/oauth
-ENDPOINT_TOKEN=/tokens
-ENDPOINT_AUTHORIZE=/authorize
-
-# Lifetiem for tokens
-accessTokenLifetime=1800
-refreshTokenLifetime=86400
+# Connection string to the auth database
+DB_AUTH_URI=mongodb://localhost:27017/auth?readPreference=primary&ssl=false
 
 ```
 
