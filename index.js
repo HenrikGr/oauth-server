@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-require('appmetrics-dash').attach()
 require('dotenv').config()
+require('appmetrics-dash').attach()
 
 const appConfig = require('./config')
 const http = require('http')
@@ -15,7 +15,7 @@ const express = require('express')
 const app = express()
 const server = http.createServer(app)
 
-//Load necessary middleware
+// Load necessary middleware
 require('./server/middleware')(app, appConfig)
 
 // Connect oauth server and its route handler to express

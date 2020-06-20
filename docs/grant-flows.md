@@ -8,7 +8,7 @@ This package supports the following grant flows.
 
 Each grant flow invoke different functions in the model.
 
-# Request password grant type
+# Request password grant
 - getClient,
 - getUser,
 - validate scope
@@ -20,7 +20,13 @@ Each grant flow invoke different functions in the model.
 - revokeToken
 - saveToken
 
-# Request client_credentials grant type
+# Request client_credentials grant
+- getClient,
+- getUserFromClient,
+- validateScope,
+- saveToken
+
+# Request authorization_code grant
 - getClient,
 - getUserFromClient,
 - validateScope,

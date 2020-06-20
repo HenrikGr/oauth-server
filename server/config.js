@@ -6,9 +6,10 @@
  */
 
 /**
- * Configuration fo the oauth server
+ * Configuration for the oauth server
  */
 const oAuthConfig = {
+  version: process.env.API_VERSION || '/v1',
   endpoints: {
     root: process.env.ENDPOINT_ROOT || '/oauth',
     token: process.env.ENDPOINT_TOKEN || '/tokens',
@@ -23,8 +24,8 @@ const oAuthConfig = {
     }
   },
   authorizeOptions: {
-    authorizationCodeLifetime: 300,
-    accessTokenLifetime: 1800
+    authorizationCodeLifetime: process.env.authorizationCodeLifetime || 300,
+    accessTokenLifetime: process.env.accessTokenLifetime || 1800
   }
 }
 

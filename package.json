@@ -15,21 +15,26 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "build": "npm install",
+    "docker-compose build app": "docker-compose build app",
+    "docker-compose up app": "docker-compose down && docker-compose up app",
+    "docker-compose prune": "docker-compose down && docker system prune -a && docker volume prune",
+    "docker build image": "docker build --tag hgcab/oauth-server:v1.0.1 .",
+    "docker run container": "docker run --publish 6001:6001 --detach --name hgcab hgcab/oauth-server:v1.0.1",
     "test": "echo \"No test specified\""
   },
   "dependencies": {
-    "@hgc-ab/db-repositories": "^1.0.13",
+    "@hgc-ab/db-repositories": "^1.0.14",
+    "@hgc-ab/debug-service": "^1.0.11",
     "appmetrics-dash": "^5.2.0",
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^3.22.0",
-    "mongodb": "^3.5.8",
-    "oauth2-server": "^3.0.1"
+    "helmet": "^3.23.1",
+    "mongodb": "^3.5.9",
+    "oauth2-server": "^3.0.2"
   },
   "devDependencies": {},
   "engines": {

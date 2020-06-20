@@ -39,7 +39,7 @@ to access said resources you should implement the client credentials grant.
 If you require the permission of a user to access resources you need to determine the client type.
 
 # Client Type?
-Depending on whether or not the client is capable of keeping a secret will depend on which grant the client should use.
+Depending on whether the client is capable of keeping a secret will depend on which grant the client should use.
 
 If the client is a web application that has a server side component then you should implement the authorization code grant.
 
