@@ -24,5 +24,11 @@ module.exports = function(app, appConfig) {
     .get(authorize(authorizeOptions))
     .post(authorize(authorizeOptions))
 
+  router.route(endpoints.authenticate).post(authenticate({scope: 'admin'}), (req, res) => {
+    console.log('Authenticate success: ', req.token)
+    res
+      .status(300).json(req.token).end()
+  })
+
   app.use(oAuthConfig.endpoints.root, router)
 }

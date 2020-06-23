@@ -23,7 +23,7 @@
     "test": "echo \"No test specified\""
   },
   "dependencies": {
-    "@hgc-ab/db-repositories": "^1.0.14",
+    "@hgc-ab/crypto-service": "^1.0.5",
     "@hgc-ab/debug-service": "^1.0.11",
     "appmetrics-dash": "^5.2.0",
     "bcrypt": "^5.0.0",

@@ -4,7 +4,7 @@
  * @licence This source code is licensed under the MIT license described and found in the
  * LICENSE file in the root directory of this source tree.
  */
-const { OauthRepository } = require('@hgc-ab/db-repositories')
+const OauthRepository = require('../repositories/OauthRepository')
 const repo = new OauthRepository('auth')
 
 /**

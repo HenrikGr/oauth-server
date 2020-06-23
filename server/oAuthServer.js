@@ -73,11 +73,14 @@ function authorize(options) {
    *
    * @type {{handle: (function(*, *): *)}}
    */
+  /*
   options.authenticateHandler = {
     handle: function(request, response) {
       return request.session.user
     }
   }
+
+   */
 
   return async function authorizeHandler(req, res) {
     try {
@@ -118,7 +121,7 @@ function authenticate(options) {
       const request = new Request(req)
       const response = new Response(res)
 
-      debugService('authenticate: Authenticate a request')
+      debugService('authenticate: Authenticate a request', options)
       let token = await oAuth2Server.authenticate(request, response, options)
       debugService('authenticate: Request authenticated')
 
@@ -126,10 +129,11 @@ function authenticate(options) {
       Object.assign(req, { token: token })
       next()
 
-    } catch (err) {
+    } catch (e) {
+      debugService('Error Authenticate a request: ', e.name, e.message)
       res
-        .status(err.status)
-        .json(err)
+        .status(e.status)
+        .json(e)
         .end()
     }
   }

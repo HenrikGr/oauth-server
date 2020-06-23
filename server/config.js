@@ -14,6 +14,7 @@ const oAuthConfig = {
     root: process.env.ENDPOINT_ROOT || '/oauth',
     token: process.env.ENDPOINT_TOKEN || '/tokens',
     authorize: process.env.ENDPOINT_AUTHORIZE || '/authorize',
+    authenticate: process.env.ENDPOINT_AUTHENTICATE || '/authenticate',
   },
   tokenOptions: {
     accessTokenLifetime: process.env.accessTokenLifetime || 1800,
