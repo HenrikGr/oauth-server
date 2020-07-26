@@ -13,6 +13,7 @@ const debugService = require('@hgc-ab/debug-service')('http')
  */
 module.exports = function(app, appConfig) {
 
+  // Debug incoming request
   app.use((req, res, next) => {
     debugService(req.protocol + '://' + req.get('host') + req.originalUrl)
     next()

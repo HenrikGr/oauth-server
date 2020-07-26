@@ -8,6 +8,7 @@
 require('dotenv').config()
 const pkg = require('../package')
 const oAuthConfig = require('../server/config')
+const apiConfig = require('../api/config')
 
 /**
  * Application configuration
@@ -18,7 +19,8 @@ const config = {
   port: process.env.PORT || 6001,
   debug: !!process.env.DEBUG,
   environment: process.env.NODE_ENV || 'development',
-  oAuthConfig: oAuthConfig
+  oAuthConfig: oAuthConfig,
+  apiConfig: apiConfig
 }
 
 module.exports = config

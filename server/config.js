@@ -5,28 +5,36 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const apiVersion = process.env.API_VERSION || '/v1'
+
 /**
  * Configuration for the oauth server
  */
 const oAuthConfig = {
-  version: process.env.API_VERSION || '/v1',
   endpoints: {
-    root: process.env.ENDPOINT_ROOT || '/oauth',
+    root: (process.env.ENDPOINT_ROOT || '/oauth') + apiVersion,
     token: process.env.ENDPOINT_TOKEN || '/tokens',
     authorize: process.env.ENDPOINT_AUTHORIZE || '/authorize',
-    authenticate: process.env.ENDPOINT_AUTHENTICATE || '/authenticate',
+    introspect: process.env.ENDPOINT_INTROSPECT || '/introspect',
+    revoke: process.env.ENDPOINT_REVOKE || '/revoke',
   },
   tokenOptions: {
-    accessTokenLifetime: process.env.accessTokenLifetime || 1800,
-    refreshTokenLifetime: process.env.refreshTokenLifetime || 86400,
-    requireClientAuthentication: {
-      password: true,
-      refresh_token: true
-    }
+    accessTokenLifetime: process.env.ACCESS_TOKEN_LIFE_TIME,
+    refreshTokenLifetime: process.env.REFRESH_TOKEN_LIFE_TIME,
   },
   authorizeOptions: {
-    authorizationCodeLifetime: process.env.authorizationCodeLifetime || 300,
-    accessTokenLifetime: process.env.accessTokenLifetime || 1800
+    authorizationCodeLifetime: process.env.AUTHORIZATION_CODE_LIFE_TIME,
+    accessTokenLifetime: process.env.ACCESS_TOKEN_LIFE_TIME,
+    allowBearerTokensInQueryString: process.env.ALLOW_BEARER_TOKEN_QUERY_STRING,
+  },
+  authenticationOptions: {
+    addAcceptedScopesHeader: true,
+    addAuthorizedScopesHeader: true,
+    allowBearerTokensInQueryString: false,
+    requireClientAuthentication: {
+      password: false,
+      refresh_token: false
+    }
   }
 }
 

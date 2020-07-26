@@ -4,23 +4,12 @@
 [![downloads](https://img.shields.io/npm/dm/@hgc-ab/oauth-server.svg?style=flat-square)](http://npm-stat.com/charts.html?package=@hgc-ab/oauth-server&from=2020-01-22)
 [![MIT License](https://img.shields.io/npm/l/@hgc-ab/oauth-server.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
-# Purpose 
-The repo contains an Oauth 2 Server to provide secure access to APIs via grants. 
+An express.js implementation of an OAuth 2 Server using;
+ - @hgc-ab/oauth-service, an Oauth 2 Library for Node.js,
+ - Mongo Db - for the data model injected to the @hgc-ab/oauth-service library,     
 
-#  Features
-The model implemented support the following authorization flows;
- - password grant,
- - refresh_token grant,
- - client_credentials grant,
- - authorization_grant.
 
-## Usage
-You can either use it as a 
-- standalone Node.js server, 
-- run it in a docker container or as 
-- a module integrated in your API Node.js server. 
-
-## Standalone Node.js server
+# Installation
 
 Installation
 1. [Install Node.js][]
@@ -30,21 +19,9 @@ Installation
 5. Run `npm start` to start the server
 
 
-## Run in docker container
-
-Install
-
-## Install as a module
-
-```shell script
-npm i @hgc-ab/oauth-server
-```
-
-## TODO: How to use it in your API server
-
 ## Configuration
 
-This package uses .env variable and the settings should be.
+This oauth-server uses .env variable, the settings should be.
 
 ```shell script
 # Set value to enforce debugging
@@ -53,6 +30,16 @@ DEBUG=@hgc-ab/oauth-server:*
 # Specify environment, development, production, test, etc
 NODE_ENV=development
 
+#
+# Oauth 2 server endpoints
+#
+API_VERSION=/v1
+ENDPOINT_ROOT=/oauth
+ENDPOINT_TOKEN=/tokens
+ENDPOINT_AUTHORIZE=/authorize
+ENDPOINT_INTROSPECT=/introspect
+ENDPOINT_REVOKE=/revoke
+
 # Connection string to the auth database
 DB_AUTH_URI=mongodb://localhost:27017/auth?readPreference=primary&ssl=false
 
@@ -60,10 +47,75 @@ DB_AUTH_URI=mongodb://localhost:27017/auth?readPreference=primary&ssl=false
 Note: .env files requires that you load them as early in your code as possible, see example below.
 
 ```javascript
+// server.js
 require('dotenv').config()
-const oAuthServer = require('@hgc-ab/oauth-server')
+const OAuth2Server = require('@hgc-ab/oauth-service')
+const { Request, Response } = OAuth2Server
 
+const model = require('./database/model')
+const oAuth2Server = new OAuth2Server(model)
+
+exports = module.exports = oAuth2Server
+exports.Request = Request
+exports.Response = Response
 ```
+
+## Middleware
+You need to create your own Express.js middleware for the OAuth 2 endpoints, for example:
+
+```javascript
+// middleware.js
+const oAuth2Server = require('./server')
+const { Request, Response } = oAuth2Server
+
+
+// Authorization endpoint, used by the client to obtain authorization grant from the resource owner.
+function authorize() {
+  return async function authorizeHandler(req, res) {
+    const request = new Request(req)
+    const response = new Response(res)
+
+    try {
+      await oAuth2Server.authorize(request, response, options)
+      return res
+        .status(response.status)
+        .set(response.headers)
+        .end()
+    } catch (e) {
+      return res
+        .status(response.status)
+        .set(response.headers)
+        .json(response.body)
+        .end()
+    }
+  }
+}
+
+// Token endpoint, used by the client to exchange an authorization grant for an access token, typically 
+// together with client authentication
+function token(options) {
+  return async function tokenHandler(req, res) {
+    const request = new Request(req)
+    const response = new Response(res)
+
+    try {
+      await oAuth2Server.token(request, response, options)
+      return res
+        .status(response.status)
+        .set(response.headers)
+        .json(response.body)
+        .end()
+    } catch (e) {
+      return res
+        .status(response.status)
+        .set(response.headers)
+        .json(response.body)
+        .end()
+    }
+  }
+}
+```
+
 
 ## Node Application Metrics Dashboard
 Node Application Metrics Dashboard (appmetrics-dash) provides a very easy-to-use web based dashboard to show the 

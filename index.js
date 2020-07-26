@@ -15,18 +15,27 @@ const express = require('express')
 const app = express()
 const server = http.createServer(app)
 
-// Load necessary middleware
-require('./server/middleware')(app, appConfig)
+/**
+ * Load necessary middleware
+ */
+require('./middleware')(app, appConfig)
 
-// Connect oauth server and its route handler to express
-require('./server')(app, appConfig)
+/**
+ * Load OAuth 2 server middleware
+ */
+require('./server/routes')(app, appConfig)
 
-// Connect errors handler to the express app
-require('./server/error-handler')(app, appConfig)
+/**
+ * Just a test api using this server as a resource server as well
+ */
+require('./api')(app, appConfig)
+
+// Connect errors handler to the resource server api
+require('./api/error-handler')(app, appConfig)
 
 // Listen on incoming request
 server.listen(appConfig.port, '0.0.0.0',function() {
-  console.log(`${appConfig.appName} listening on: http://localhost:${appConfig.port}`)
+  console.log(`${appConfig.appName} listening on: ${appConfig.port}`)
 })
 
 module.exports = server
