@@ -31,5 +31,5 @@ jobs:
       with:
         app-name: 'hgc-oauth-server'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_9e3408e12f364b5eb2fd37f3af79043b }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_de8a907096ab424eb6fc6c12561cc8f1 }}
         package: .
