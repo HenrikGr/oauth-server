@@ -43,7 +43,8 @@ const config = require('./config')
  */
 class DbClient {
   /**
-   * create a new DbClient instance
+   * create a DbClient instance
+   * 
    * @param {String} dbName - The name of the database
    */
   constructor(dbName) {
@@ -55,13 +56,14 @@ class DbClient {
 
     /**
      * Database connection string map
-     * @type {{auth, account: string}}
+     * @type {{auth: string, account: string}}
      */
     this.dbConnectionUrlMap = config
   }
 
   /**
-   * Check if dbName exist in the db connection string mao
+   * Check if dbName exist in the db connection string
+   * 
    * @param {String} dbName - The database name
    */
   assertDbName(dbName) {
@@ -81,13 +83,16 @@ class DbClient {
 
   /**
    * Connect to mongo and return the connected client
-   * @param dbName
-   * @returns {Promise<MongoClient>}
+   * 
+   * @public
+   * @param dbName The database name
+   * @returns {Promise<MongoClient>} A connected dbClient intstance
    */
   async connect(dbName) {
     try {
       this.assertDbName(dbName)
       const dbUrl = dbName ? this.dbConnectionUrlMap[dbName] : this.dbConnectionUrlMap[this.dbName]
+      debugService('connect to dbUrl: ', this.dbConnectionUrlMap[dbName], dbUrl)
       return await MongoClient.connect(dbUrl, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -104,9 +109,9 @@ class DbClient {
    * Connect to specified mongo database and collection
    *
    * @public
-   * @param collectionName
-   * @param dbName
-   * @returns {Promise<Collection<DefaultSchema>>}
+   * @param collectionName The collection name
+   * @param dbName The database name
+   * @returns {Promise<Collection<DefaultSchema>>} a database collection
    */
   async connectCollection(collectionName, dbName) {
     try {
