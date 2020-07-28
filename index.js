@@ -5,14 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-require('dotenv').config()
+const dotenv = require('dotenv')
+const result = dotenv.config() 
+if (result.error) {
+  throw result.error
+}
 require('appmetrics-dash').attach()
-
 const appConfig = require('./config')
 const http = require('http')
 const express = require('express')
 
+
+/**
+ * Express.js app
+ */
 const app = express()
+
+/**
+ * Express based server
+ */
 const server = http.createServer(app)
 
 /**

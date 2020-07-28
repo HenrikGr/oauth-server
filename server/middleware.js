@@ -20,7 +20,7 @@ const { Request, Response } = oAuth2Server
  * @param {Object} options - options
  * @returns {Function}
  */
-function authenticate(options) {
+function authenticate(options = {}) {
   return async function authenticationHandler(req, res, next) {
     debugService('authenticate: started')
     const request = new Request(req)
@@ -70,7 +70,7 @@ function authenticate(options) {
  * @param {Number} options.accessTokenLifetime - Lifetime of implicit grant access token in seconds
  * @returns {Function}
  */
-function authorize(options) {
+function authorize(options = {}) {
   return async function authorizeHandler(req, res) {
     debugService('authorize: started')
     const request = new Request(req)
@@ -105,9 +105,9 @@ function authorize(options) {
  * @returns {Function}
  * @throws {Error}
  */
-function token(options) {
+function token(options = {}) {
   return async function tokenHandler(req, res) {
-    debugService('token: started')
+    debugService('token: started', options)
     const request = new Request(req)
     const response = new Response(res)
 

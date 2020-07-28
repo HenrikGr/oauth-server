@@ -21,7 +21,7 @@ const MongoClient = require('mongodb').MongoClient
  * Database configuration map
  * @type {{auth: string, account: string}}
  */
-const config = require('./config')
+const connectionUrlMap = require('./config')
 
 
 /**
@@ -58,7 +58,7 @@ class DbClient {
      * Database connection string map
      * @type {{auth: string, account: string}}
      */
-    this.dbConnectionUrlMap = config
+    this.dbConnectionUrlMap = connectionUrlMap
   }
 
   /**
@@ -92,7 +92,6 @@ class DbClient {
     try {
       this.assertDbName(dbName)
       const dbUrl = dbName ? this.dbConnectionUrlMap[dbName] : this.dbConnectionUrlMap[this.dbName]
-      debugService('connect to dbUrl: ', this.dbConnectionUrlMap[dbName], dbUrl)
       return await MongoClient.connect(dbUrl, {
         useNewUrlParser: true,
         useUnifiedTopology: true

@@ -9,9 +9,9 @@
  * Database connection strings map
  * @type {{auth: string, account: string}}
  */
-const dbConfig = {
+const connectionUrlMap = {
   auth: process.env.DB_AUTH_URI,
   account: process.env.DB_ACCOUNT_URI,
 }
 
-module.exports = dbConfig
+module.exports = connectionUrlMap

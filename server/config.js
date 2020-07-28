@@ -17,24 +17,6 @@ const oAuthConfig = {
     authorize: process.env.ENDPOINT_AUTHORIZE || '/authorize',
     introspect: process.env.ENDPOINT_INTROSPECT || '/introspect',
     revoke: process.env.ENDPOINT_REVOKE || '/revoke',
-  },
-  tokenOptions: {
-    accessTokenLifetime: process.env.ACCESS_TOKEN_LIFE_TIME,
-    refreshTokenLifetime: process.env.REFRESH_TOKEN_LIFE_TIME,
-  },
-  authorizeOptions: {
-    authorizationCodeLifetime: process.env.AUTHORIZATION_CODE_LIFE_TIME,
-    accessTokenLifetime: process.env.ACCESS_TOKEN_LIFE_TIME,
-    allowBearerTokensInQueryString: process.env.ALLOW_BEARER_TOKEN_QUERY_STRING,
-  },
-  authenticationOptions: {
-    addAcceptedScopesHeader: true,
-    addAuthorizedScopesHeader: true,
-    allowBearerTokensInQueryString: false,
-    requireClientAuthentication: {
-      password: false,
-      refresh_token: false
-    }
   }
 }
 

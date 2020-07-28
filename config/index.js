@@ -5,8 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-require('dotenv').config()
-
 /**
  * Package information such as version, etc.
  */
