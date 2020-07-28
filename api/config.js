@@ -12,9 +12,13 @@ const apiVersion = process.env.API_VERSION || '/v1'
  */
 const apiConfig = {
   root: process.env.ENDPOINT_API || '/api' + apiVersion,
-  info: {
-    uri: '/info',
-    scope: 'admin'
+  status: {
+    uri: '/status',
+    scope: ''
+  },
+  secret: {
+    uri: '/secret',
+    scope: 'profile'
   }
 }
 

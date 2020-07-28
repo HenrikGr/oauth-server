@@ -19,8 +19,13 @@ const router = require('express').Router()
 module.exports = function(app, appConfig) {
   const { apiConfig } = appConfig
 
-  router.route(apiConfig.info.uri).all(authenticate({scope: apiConfig.info.scope}), (req, res) => {
-    res.status(200).json({ access: 'OK'}).end()
+  // Get API status info
+  router.route(apiConfig.status.uri).get((req, res) => {
+    res.status(200).json({ status: 'OK' }).end()
+  })
+
+  router.route(apiConfig.secret.uri).all(authenticate({scope: apiConfig.secret.scope}), (req, res) => {
+    res.status(200).json({ scope: apiConfig.secret.scope, access: 'OK' }).end()
   })
 
 
