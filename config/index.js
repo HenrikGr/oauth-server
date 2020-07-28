@@ -6,6 +6,10 @@
  */
 
 require('dotenv').config()
+
+/**
+ * package information such as version, etc.
+ */
 const pkg = require('../package')
 const oAuthConfig = require('../server/config')
 const apiConfig = require('../api/config')
