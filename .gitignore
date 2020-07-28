@@ -28,7 +28,6 @@ node_modules/
 # Ignore environment
 .env.development
 .env.production
-.env
 
 # IBM Cloud Foundry
 vcap-local.json
