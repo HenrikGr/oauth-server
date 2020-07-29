@@ -16,12 +16,13 @@ const debugService = require('@hgc-ab/debug-service')('dbClient')
  * @type {MongoClient}
  */
 const MongoClient = require('mongodb').MongoClient
+const ObjectId = require('mongodb').ObjectId
 
 /**
  * Database configuration map
  * @type {{auth: string, account: string}}
  */
-const connectionUrlMap = require('./config')
+const connectionUrlMap = require('./dbConfig')
 
 
 /**
@@ -92,11 +93,11 @@ class DbClient {
     try {
       this.assertDbName(dbName)
       const dbUrl = dbName ? this.dbConnectionUrlMap[dbName] : this.dbConnectionUrlMap[this.dbName]
+      debugService('MongoURL: ', dbUrl)
       return await MongoClient.connect(dbUrl, {
         useNewUrlParser: true,
         useUnifiedTopology: true
       })
-
     } catch (e) {
       debugService('connectDb:', e.name, e.message)
       throw e

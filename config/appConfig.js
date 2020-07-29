@@ -13,7 +13,7 @@ const pkg = require('../package')
 /**
  * OAuth 2 configurations
  */
-const oAuthConfig = require('../server/config')
+const oAuthConfig = require('../server/oAuthConfig')
 
 /**
  * API configurations
@@ -24,7 +24,7 @@ const apiConfig = require('../api/config')
  * Application configuration
  * @type {Object}
  */
-const config = {
+const appConfig = {
   appName: pkg.name,
   port: process.env.PORT || 6001,
   debug: !!process.env.DEBUG,
@@ -33,4 +33,4 @@ const config = {
   apiConfig: apiConfig
 }
 
-module.exports = config
+module.exports = appConfig

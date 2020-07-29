@@ -5,13 +5,15 @@
  * and found in the LICENSE file in the root directory of this source tree.
  */
 
-/**
- * Database connection strings map
+
+ /**
+ * Database connection strings map for mongo atlas
  * @type {{auth: string, account: string}}
  */
 const connectionUrlMap = {
-  auth: process.env.DB_AUTH_URI,
-  account: process.env.DB_ACCOUNT_URI,
-}
-
-module.exports = connectionUrlMap
+    auth: process.env.DB_AUTH_URI,
+    account: process.env.DB_ACCOUNT_URI,
+  }
+  
+  module.exports = connectionUrlMap
+  

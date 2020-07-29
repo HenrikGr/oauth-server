@@ -11,7 +11,7 @@ if (result.error) {
   throw result.error
 }
 require('appmetrics-dash').attach()
-const appConfig = require('./config')
+const appConfig = require('./config/appConfig')
 const http = require('http')
 const express = require('express')
 

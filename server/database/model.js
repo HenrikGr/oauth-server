@@ -16,6 +16,7 @@ const { isValidPassword } = require('@hgc-ab/crypto-service')
  */
 const dbClient = new DbClient('auth')
 
+
 /**
  * Assert a password against credentials
  *
