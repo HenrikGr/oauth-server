@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { authenticate } = require('../server/middleware')
+const authenticate = require('../server/middleware/authenticate')
 const router = require('express').Router()
 
 /**
@@ -19,12 +19,14 @@ const router = require('express').Router()
 module.exports = function(app, appConfig) {
   const { apiConfig } = appConfig
 
+  console.log('apiConfig', apiConfig.status.uri)
+
   // Get API status info
   router.route(apiConfig.status.uri).get((req, res) => {
     res.status(200).json({ status: 'OK' }).end()
   })
 
-  router.route(apiConfig.secret.uri).all(authenticate({scope: apiConfig.secret.scope}), (req, res) => {
+  router.route(apiConfig.secret.uri).get(authenticate({scope: apiConfig.secret.scope}), (req, res) => {
     res.status(200).json({ scope: apiConfig.secret.scope, access: 'OK' }).end()
   })
 

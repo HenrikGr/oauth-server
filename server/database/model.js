@@ -7,7 +7,7 @@
 const MongoError = require('mongodb').MongoError
 const ObjectId = require('mongodb').ObjectId
 const DbClient = require('./DbClient')
-const debugService = require('@hgc-ab/debug-service')('repository:mongoDb')
+const debugService = require('@hgc-ab/debug-service')('repository:model')
 const { isValidPassword } = require('@hgc-ab/crypto-service')
 
 /**
@@ -15,7 +15,6 @@ const { isValidPassword } = require('@hgc-ab/crypto-service')
  * @type {DbClient}
  */
 const dbClient = new DbClient('auth')
-
 
 /**
  * Assert a password against credentials

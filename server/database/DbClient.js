@@ -6,24 +6,22 @@
  */
 
 /**
- * Debug service
- * @type {debug.Debugger|*}
- */
-const debugService = require('@hgc-ab/debug-service')('dbClient')
-
-/**
- * Mongo client
- * @type {MongoClient}
+ * Module dependencies
+ * @private
  */
 const MongoClient = require('mongodb').MongoClient
-const ObjectId = require('mongodb').ObjectId
 
 /**
- * Database configuration map
+ * Module dependency
+ * @private
+ */
+const debugService = require('@hgc-ab/debug-service')('repository:dbClient')
+
+/**
+ * Database connection string map
  * @type {{auth: string, account: string}}
  */
 const connectionUrlMap = require('./dbConfig')
-
 
 /**
  * DbClient class
@@ -45,99 +43,67 @@ const connectionUrlMap = require('./dbConfig')
 class DbClient {
   /**
    * create a DbClient instance
-   * 
-   * @param {String} dbName - The name of the database
+   *
+   * @param {String} dbName The name of the database
    */
   constructor(dbName) {
     /**
      * Initial dbName
+     *
+     * @private
      * @type {String}
      */
     this.dbName = dbName
 
     /**
      * Database connection string map
+     *
+     * @private
      * @type {{auth: string, account: string}}
      */
     this.dbConnectionUrlMap = connectionUrlMap
   }
 
   /**
-   * Check if dbName exist in the db connection string
-   * 
-   * @param {String} dbName - The database name
-   */
-  assertDbName(dbName) {
-    if (dbName) {
-      let isFound = false
-      for (const prop in this.dbConnectionUrlMap) {
-        if(prop === dbName.toLowerCase() ) {
-          isFound = true
-        }
-      }
-
-      if (!isFound) {
-        throw new Error('Database connection string: The `dbName` is invalid ')
-      }
-    }
-  }
-
-  /**
    * Connect to mongo and return the connected client
-   * 
+   *
    * @public
-   * @param dbName The database name
+   * @param {String} dbName The database name
    * @returns {Promise<MongoClient>} A connected dbClient intstance
    */
   async connect(dbName) {
     try {
-      this.assertDbName(dbName)
       const dbUrl = dbName ? this.dbConnectionUrlMap[dbName] : this.dbConnectionUrlMap[this.dbName]
-      debugService('MongoURL: ', dbUrl)
+
       return await MongoClient.connect(dbUrl, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
       })
     } catch (e) {
-      debugService('connectDb:', e.name, e.message)
+      debugService('connect: ', e.name, e.message)
       throw e
     }
   }
 
-  // noinspection JSValidateJSDoc
   /**
    * Connect to specified mongo database and collection
    *
    * @public
-   * @param collectionName The collection name
-   * @param dbName The database name
+   * @param {String} collectionName The collection name
+   * @param {String} dbName The database name
    * @returns {Promise<Collection<DefaultSchema>>} a database collection
    */
   async connectCollection(collectionName, dbName) {
     try {
-      /**
-       * Connect the client to mongo
-       * @type {MongoClient}
-       */
+      debugService('connectCollection: ', collectionName)
       const client = await this.connect(dbName)
-
-      /**
-       * Get the database object
-       * @type {Db}
-       */
       const db = dbName ? client.db(dbName) : client.db(this.dbName)
-
-      /**
-       * Return the collection
-       */
       return db.collection(collectionName)
     } catch (e) {
       debugService('connectCollection:', e.name, e.message)
       throw e
     }
   }
-
 }
-
 
 module.exports = DbClient
