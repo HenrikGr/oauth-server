@@ -62,23 +62,47 @@ class DbClient {
      * @type {{auth: string, account: string}}
      */
     this.dbConnectionUrlMap = connectionUrlMap
+
+    /**
+     * Database instance cache
+     *
+     * @private
+     * @type {Db}
+     */
+    this._db = null
   }
 
   /**
-   * Connect to mongo and return the connected client
+   * Gette for the cached database instance
+   */
+  get db() {
+    return this._db
+  }
+
+  /**
+   * Setter to set the cached database instance
+   */
+  set db(value) {
+    this._db = value
+  }
+
+  /**
+   * Connect to mongo and return a database instance
    *
    * @public
    * @param {String} dbName The database name
-   * @returns {Promise<MongoClient>} A connected dbClient intstance
+   * @returns {Promise<Db>} A db instance
    */
   async connect(dbName) {
     try {
+      debugService('connect: returning a db instance')
       const dbUrl = dbName ? this.dbConnectionUrlMap[dbName] : this.dbConnectionUrlMap[this.dbName]
-
-      return await MongoClient.connect(dbUrl, {
+      const client = await MongoClient.connect(dbUrl, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
+
+      return client.db(dbName)
     } catch (e) {
       debugService('connect: ', e.name, e.message)
       throw e
@@ -86,7 +110,7 @@ class DbClient {
   }
 
   /**
-   * Connect to specified mongo database and collection
+   * Connect to specified mongo collection and database
    *
    * @public
    * @param {String} collectionName The collection name
@@ -96,9 +120,14 @@ class DbClient {
   async connectCollection(collectionName, dbName) {
     try {
       debugService('connectCollection: ', collectionName)
-      const client = await this.connect(dbName)
-      const db = dbName ? client.db(dbName) : client.db(this.dbName)
-      return db.collection(collectionName)
+      // Id db instance exist in cache - get the collection
+      if (!dbName && this.db) {
+        return this.db.collection(collectionName)
+      } else {
+        // Get a new db instance to the cache
+        this.db = await this.connect(dbName)
+        return this.db.collection(collectionName)
+      }
     } catch (e) {
       debugService('connectCollection:', e.name, e.message)
       throw e
