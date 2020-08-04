@@ -13,7 +13,7 @@ const pkg = require('../package')
 /**
  * OAuth 2 configurations
  */
-const oAuthConfig = require('../server/oAuthConfig')
+const oAuthConfig = require('../server/config')
 
 /**
  * API configurations

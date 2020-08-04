@@ -37,7 +37,7 @@ const app = express()
 const server = http.createServer(app)
 
 /**
- * Load necessary middleware
+ * Load Express middleware
  */
 require('./middleware')(app, appConfig)
 
@@ -49,10 +49,10 @@ require('./server/routes')(app, appConfig)
 /**
  * Just a test api using this server as a resource server as well
  */
-require('./api')(app, appConfig)
+require('./api/routes')(app, appConfig)
 
 
-// Connect errors handler to the resource server api
+// Connect errors handler for the resource server api
 require('./api/error-handler')(app, appConfig)
 
 /**

@@ -15,7 +15,7 @@ const MongoClient = require('mongodb').MongoClient
  * Module dependency
  * @private
  */
-const debugService = require('@hgc-ab/debug-service')('repository:dbClient')
+const { log, error} = require('@hgc-ab/debug-service')('repository:model:mongo:dbClient')
 
 /**
  * Database connection string map
@@ -24,19 +24,16 @@ const debugService = require('@hgc-ab/debug-service')('repository:dbClient')
 const connectionUrlMap = require('./dbConfig')
 
 /**
- * DbClient class
+ * Implements methods to connect to a Mongo server
+ * to access a database and it's collections
  *
- * An instance of the class implements access to
- * the provided database and collection (table).
- *
- * It provides methods to connect to database and collection
- * in a mongo db environment
- *
- * @example
+ * @example Instanciate an instance and connect to a collection
  * const dbClient = new DbClient('dbName')
- * dbClient.connectCollectionName('dbName', 'collectionName')
+ * await dbClient.connectCollectionName('dbName', 'collectionName')
+ * 
  * or
- * dbClient.connectCollectionName('collectionName')
+ * 
+ * await dbClient.connectCollectionName('collectionName')
  *
  * @class
  */
@@ -57,6 +54,7 @@ class DbClient {
 
     /**
      * Database connection string map
+     * Should contain supported databases only
      *
      * @private
      * @type {{auth: string, account: string}}
@@ -73,7 +71,9 @@ class DbClient {
   }
 
   /**
-   * Gette for the cached database instance
+   * Getter for the cached database instance
+   * 
+   * @returns {Db} The cached database instance
    */
   get db() {
     return this._db
@@ -81,6 +81,8 @@ class DbClient {
 
   /**
    * Setter to set the cached database instance
+   * 
+   * @param {Db} A database instance
    */
   set db(value) {
     this._db = value
@@ -91,11 +93,11 @@ class DbClient {
    *
    * @public
    * @param {String} dbName The database name
-   * @returns {Promise<Db>} A db instance
+   * @returns {Promise<Db>} db instance
    */
   async connect(dbName) {
     try {
-      debugService('connect: returning a db instance')
+      log('connect: returning a db instance')
       const dbUrl = dbName ? this.dbConnectionUrlMap[dbName] : this.dbConnectionUrlMap[this.dbName]
       const client = await MongoClient.connect(dbUrl, {
         useNewUrlParser: true,
@@ -104,22 +106,22 @@ class DbClient {
 
       return client.db(dbName)
     } catch (e) {
-      debugService('connect: ', e.name, e.message)
+      error('connect: ', e.name, e.message)
       throw e
     }
   }
 
   /**
-   * Connect to specified mongo collection and database
+   * Connect to specified mongo collection
    *
    * @public
    * @param {String} collectionName The collection name
    * @param {String} dbName The database name
-   * @returns {Promise<Collection<DefaultSchema>>} a database collection
+   * @returns {Promise<Collection<DefaultSchema>>} collection instance
    */
   async connectCollection(collectionName, dbName) {
     try {
-      debugService('connectCollection: ', collectionName)
+      log('connectCollection: ', collectionName)
       // Id db instance exist in cache - get the collection
       if (!dbName && this.db) {
         return this.db.collection(collectionName)
@@ -129,10 +131,10 @@ class DbClient {
         return this.db.collection(collectionName)
       }
     } catch (e) {
-      debugService('connectCollection:', e.name, e.message)
+      error('connectCollection:', e.name, e.message)
       throw e
     }
   }
 }
 
-module.exports = DbClient
+exports = module.exports = DbClient

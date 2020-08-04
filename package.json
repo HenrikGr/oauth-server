@@ -24,21 +24,18 @@
   },
   "dependencies": {
     "@hgc-ab/crypto-service": "^1.0.5",
-    "@hgc-ab/debug-service": "^1.0.11",
-    "@hgc-ab/oauth-service": "^0.0.18",
-    "@types/mongodb": "^3.5.25",
-    "appmetrics-dash": "^5.2.0",
+    "@hgc-ab/debug-service": "^1.0.15",
+    "@hgc-ab/oauth-service": "^0.0.19",
     "basic-auth": "^2.0.1",
-    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^3.23.3",
-    "mongodb": "^3.5.9",
-    "statuses": "^2.0.0",
-    "type-is": "^1.6.18"
+    "helmet": "^4.0.0",
+    "mongodb": "^3.6.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/mongodb": "^3.5.25"
+  }
 }

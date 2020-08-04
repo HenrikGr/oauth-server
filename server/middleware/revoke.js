@@ -9,7 +9,7 @@
  * Module dependency
  * @private
  */
-const debugService = require('@hgc-ab/debug-service')('middleware')
+const { log, error} = require('@hgc-ab/debug-service')('middleware')
 
 /**
  * Module dependency
@@ -36,16 +36,16 @@ exports = module.exports = revoke
  */
 function revoke(options = {}) {
   return async function revokeHandler(req, res, next) {
-    debugService('revokeHandler: started with options: ', options)
+    log('revokeHandler: started with options: ', options)
     const request = new Request(req)
     const response = new Response(res)
 
     try {
       await oAuth2Server.revoke(request, response, options)
-      debugService('revokeHandler: ended gracefully')
+      log('revokeHandler: ended gracefully')
       return res.status(response.status).set(response.headers).end()
     } catch (e) {
-      debugService('revokeHandler:', e.name, e.message)
+      error('revokeHandler:', e.name, e.message)
       return res.status(response.status).set(response.headers).json(response.body).end()
     }
   }

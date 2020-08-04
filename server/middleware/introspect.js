@@ -9,7 +9,7 @@
  * Module dependency
  * @private
  */
-const debugService = require('@hgc-ab/debug-service')('middleware')
+const { log, error } = require('@hgc-ab/debug-service')('middleware')
 
 /**
  * Module dependency
@@ -36,16 +36,16 @@ exports = module.exports = introspect
  */
 function introspect(options = {}) {
   return async function introspectHandler(req, res, next) {
-    debugService('introspectHandler: started with options: ', options)
+    log('introspectHandler: started with options: ', options)
     const request = new Request(req)
     const response = new Response(res)
 
     try {
       await oAuth2Server.introspect(request, response, options)
-      debugService('introspectHandler: ended gracefully')
+      log('introspectHandler: ended gracefully')
       return res.status(response.status).set(response.headers).json(response.body).end()
     } catch (e) {
-      debugService('introspectHandler:', e.name, e.message, response.status)
+      error('introspectHandler:', e.name, e.message, response.status)
       return res.status(response.status).set(response.headers).json(response.body).end()
     }
   }

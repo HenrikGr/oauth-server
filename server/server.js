@@ -21,7 +21,7 @@ const { Request, Response } = OAuth2Server
  * Database access model
  * @private
  */
-const model = require('./database/model')
+const model = require('../database/model')
 
 /**
  * OAuth 2 Server
