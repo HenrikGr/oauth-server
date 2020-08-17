@@ -43,7 +43,7 @@ function revoke(options = {}) {
     try {
       await oAuth2Server.revoke(request, response, options)
       log('revokeHandler: ended gracefully')
-      return res.set(response.headers).status(response.status)
+      return res.set(response.headers).status(response.status).end()
     } catch (e) {
       error('revokeHandler:', e.name, e.message)
       return res.set(response.headers).status(response.status).json(response.body)
