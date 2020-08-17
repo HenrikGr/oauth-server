@@ -32,10 +32,10 @@
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^4.0.0",
+    "helmet": "^4.1.0",
     "mongodb": "^3.6.0"
   },
   "devDependencies": {
-    "@types/mongodb": "^3.5.25"
+    "@types/mongodb": "^3.5.26"
   }
 }
