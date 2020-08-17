@@ -43,10 +43,10 @@ function introspect(options = {}) {
     try {
       await oAuth2Server.introspect(request, response, options)
       log('introspectHandler: ended gracefully')
-      return res.status(response.status).set(response.headers).json(response.body).end()
+      return res.set(response.headers).status(response.status).json(response.body)
     } catch (e) {
       error('introspectHandler:', e.name, e.message, response.status)
-      return res.status(response.status).set(response.headers).json(response.body).end()
+      return res.set(response.headers).status(response.status).json(response.body)
     }
   }
 }

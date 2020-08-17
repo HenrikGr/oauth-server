@@ -5,14 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { NotFound, InternalServerError } = require('./errors')
+const { APIError, NotFound, InternalServerError } = require('./errors')
 
 /**
  * Load express error handler
  * @param app
  */
-module.exports = function(app) {
-
+module.exports = function (app) {
   /**
    * Error handler to catch system errors
    * Call next if there are an 404 errors
@@ -21,9 +20,13 @@ module.exports = function(app) {
     // No api handled the request and no system errors, that means 404 issue.
     if (!err) return next()
 
-    // Internal system errors
-    const error = new InternalServerError(err.message)
-    return res.status(error.status || 500).json(error)
+    if (err instanceof APIError) {
+      return res.status(err.status).json(err)
+    } else {
+      // Internal system errors
+      const error = new InternalServerError(err.message)
+      return res.status(error.status || 500).json(error)
+    }
   })
 
   /**

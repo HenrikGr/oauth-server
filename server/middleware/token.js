@@ -47,10 +47,10 @@ function token(options = {}) {
       log('tokenHandler: started with options: ', options)
       await oAuth2Server.token(request, response, options)
       log('tokenHandler: ended gracefully')
-      return res.status(response.status).set(response.headers).json(response.body).end()
+      return res.set(response.headers).status(response.status).json(response.body)
     } catch (e) {
       error('tokenHandler:', e.name, e.message)
-      return res.status(response.status).set(response.headers).json(response.body).end()
+      return res.set(response.headers).status(response.status).json(response.body)
     }
   }
 }

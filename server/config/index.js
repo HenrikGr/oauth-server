@@ -5,14 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const apiVersion = process.env.API_VERSION || '/v1'
 
 /**
  * Configuration for the OAuth 2 server
  */
 const oAuthConfig = {
-  version: process.env.API_VERSION || '/v1',
+  corsConfig: {
+    origin: true,
+    allowedHeaders: ['Authorization'],
+    exposedHeaders: ['WWW-Authenticate', 'X-Accepted-OAuth-Scopes', 'X-OAuth-Scopes'],
+  },
   endpoints: {
-    root: process.env.ENDPOINT_ROOT || '/oauth',
+    root: (process.env.ENDPOINT_ROOT || '/oauth') + apiVersion,
     token: process.env.ENDPOINT_TOKEN || '/tokens',
     authorize: process.env.ENDPOINT_AUTHORIZE || '/authorize',
     introspect: process.env.ENDPOINT_INTROSPECT || '/introspect',

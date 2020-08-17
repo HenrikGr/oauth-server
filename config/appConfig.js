@@ -16,11 +16,6 @@ const pkg = require('../package')
 const oAuthConfig = require('../server/config')
 
 /**
- * API configurations
- */
-const apiConfig = require('../api/config')
-
-/**
  * Application configuration
  * @type {Object}
  */
@@ -30,7 +25,6 @@ const appConfig = {
   debug: !!process.env.DEBUG,
   environment: process.env.NODE_ENV || 'development',
   oAuthConfig: oAuthConfig,
-  apiConfig: apiConfig
 }
 
 module.exports = appConfig

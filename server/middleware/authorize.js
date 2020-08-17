@@ -66,10 +66,10 @@ function authorize(options = {}) {
     try {
       await oAuth2Server.authorize(request, response, options)
       log('authorizeHandler: ended gracefully')
-      return res.status(response.status).set(response.headers).end()
+      return res.set(response.headers).status(response.status)
     } catch (e) {
       error('authorizeHandler: ', e.name, e.message)
-      return res.status(response.status).set(response.headers).json(response.body).end()
+      return res.set(response.headers).status(response.status).json(response.body)
     }
   }
 }

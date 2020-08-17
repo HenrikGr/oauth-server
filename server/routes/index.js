@@ -10,6 +10,7 @@
  * @private
  */
 const router = require('express').Router()
+const cors = require('cors')
 
 /**
  * Module dependency
@@ -36,36 +37,37 @@ const introspect = require('../middleware/introspect')
 const revoke = require('../middleware/revoke')
 
 /**
- * Set up router, endpoints, middlewares and attach the router to express
+ * Set up router, endpoints, middleware and attach the router to express
  * @param app
  * @param appConfig
  */
 module.exports = function (app, appConfig) {
   const { oAuthConfig } = appConfig
-  const { version, endpoints } = oAuthConfig
-
-  /**
-   * Endpoint to authorize a request for an access token
-   */
-  router.route(endpoints.authorize).get(authorize()).post(authorize())
+  const { corsConfig, endpoints, tokenOptions, authorizeOptions } = oAuthConfig
 
   /**
    * Endpoint to request access tokens for an authorized request
    */
-  router.route(endpoints.token).post(token())
+  router.route(endpoints.token).post(token(tokenOptions))
 
   /**
-   * Endpoint to introspect a token status
+   * Endpoint to authorize a request for an access token
+   */
+  router
+    .route(endpoints.authorize)
+    .get(authorize(authorizeOptions))
+    .post(authorize(authorizeOptions))
+
+  /**
+   * Endpoint to introspect an access token status
    */
   router.route(endpoints.introspect).post(introspect())
 
   /**
-   * Endpoint to revoke a token
+   * Endpoint to revoke token
    */
   router.route(endpoints.revoke).post(revoke())
 
-  /**
-   * Attach router to root endpoint
-   */
-  app.use(endpoints.root + version, router)
+  // Connect the endpoints to the root endpoint and express.js
+  app.use(oAuthConfig.endpoints.root, cors(corsConfig), router)
 }

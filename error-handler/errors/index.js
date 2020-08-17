@@ -119,6 +119,7 @@ function InternalServerError(message, details = {}) {
 InternalServerError.prototype = Object.create(APIError.prototype)
 
 module.exports = {
+  APIError: APIError,
   BadRequest: BadRequest,
   Unauthorized: Unauthorized,
   Forbidden: Forbidden,

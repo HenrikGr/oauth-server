@@ -46,14 +46,8 @@ require('./middleware')(app, appConfig)
  */
 require('./server/routes')(app, appConfig)
 
-/**
- * Just a test api using this server as a resource server as well
- */
-require('./api/routes')(app, appConfig)
-
-
 // Connect errors handler for the resource server api
-require('./api/error-handler')(app, appConfig)
+require('./error-handler')(app, appConfig)
 
 /**
  * Listen on incoming request

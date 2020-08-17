@@ -38,7 +38,7 @@ exports = module.exports = authenticate
  * @public
  * @param {Object} options Optional settings
  * @param {Boolean} options.addAcceptedScopesHeader Add accepted scope in header
- * @param {Boolean} options.addAuthorizedScopesHeader Add athorized scopes in header
+ * @param {Boolean} options.addAuthorizedScopesHeader Add authorized scopes in header
  * @param {Boolean} options.allowBearerTokensInQueryString Allow bearer token in query string
  */
 function authenticate(options = {}) {
@@ -49,12 +49,16 @@ function authenticate(options = {}) {
 
     try {
       const token = await oAuth2Server.authenticate(request, response, options)
+      /**
+       * Set updated response headers
+       */
+      res.set(response.headers)
       Object.assign(req, { token: token })
       log('authenticateHandler: ended gracefully')
       next()
     } catch (e) {
       error('authenticateHandler:', e.name, e.message)
-      return res.status(response.status).json(response.body).end()
+      return res.set(response.headers).status(response.status).json(response.body)
     }
   }
 }

@@ -13,5 +13,8 @@ const cors = require('cors')
  */
 module.exports = function(app, appConfig) {
 
-  app.use(cors())
+  /**
+   * Enable pre-flight options for the app.
+   */
+  app.options('*', cors()) // include before other routes
 }
