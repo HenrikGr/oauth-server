@@ -12,9 +12,14 @@ const cors = require('cors')
  * @param appConfig
  */
 module.exports = function(app, appConfig) {
-
+  const { oAuthConfig } = appConfig
+  const { corsConfig } = oAuthConfig
   /**
    * Enable pre-flight options for the app.
    */
   app.options('*', cors()) // include before other routes
+  /**
+   * Set cors configuration for the oauth
+   */
+  app.use(cors(corsConfig))
 }

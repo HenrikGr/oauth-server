@@ -10,7 +10,6 @@
  * @private
  */
 const router = require('express').Router()
-const cors = require('cors')
 
 /**
  * Module dependency
@@ -43,7 +42,7 @@ const revoke = require('../middleware/revoke')
  */
 module.exports = function (app, appConfig) {
   const { oAuthConfig } = appConfig
-  const { corsConfig, endpoints, tokenOptions, authorizeOptions } = oAuthConfig
+  const { endpoints, tokenOptions, authorizeOptions } = oAuthConfig
 
   /**
    * Endpoint to request access tokens for an authorized request
@@ -69,5 +68,5 @@ module.exports = function (app, appConfig) {
   router.route(endpoints.revoke).post(revoke())
 
   // Connect the endpoints to the root endpoint and express.js
-  app.use(oAuthConfig.endpoints.root, cors(corsConfig), router)
+  app.use(oAuthConfig.endpoints.root, router)
 }
