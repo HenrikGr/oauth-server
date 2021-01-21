@@ -9,14 +9,18 @@
  * Module dependency
  */
 const dotenv = require('dotenv')
+const { log, error } = require('@hgc-ab/debug-service')('middleware')
 
 /**
  * Validate .env variables
  */
 const result = dotenv.config()
 if (result.error) {
+  error('ERROR: ', result)
   throw result.error
 }
+
+log('ENV: ', result)
 
 const http = require('http')
 const express = require('express')
