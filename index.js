@@ -42,11 +42,18 @@ const server = http.createServer(app)
 require('./middleware')(app, appConfig)
 
 /**
- * Load OAuth2 server middleware
+ * Load node server routes
+ */
+require('./routes')(app, appConfig)
+
+/**
+ * Load OAuth2 server routes
  */
 require('./server/routes')(app, appConfig)
 
-// Connect errors handler for the resource server api
+/**
+ * Load errors handler for the resource server
+ */
 require('./error-handler')(app, appConfig)
 
 /**
