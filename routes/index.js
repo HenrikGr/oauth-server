@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const { log, error } = require('@hgc-ab/debug-service')('middleware')
 const router = require('express').Router()
 
 /**
@@ -15,6 +16,7 @@ const router = require('express').Router()
 module.exports = function (app, appConfig) {
 
   router.route('/').all((req, res) => {
+    log('status: UP')
     return res.status(200).json({ status: 'UP'})    
   })
 
