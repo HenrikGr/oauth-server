@@ -20,8 +20,6 @@ if (result.error) {
   throw result.error
 }
 
-log('ENV: ', result)
-
 const http = require('http')
 const express = require('express')
 
@@ -58,6 +56,7 @@ require('./error-handler')(app, appConfig)
  */
 server.listen(appConfig.port, '0.0.0.0', function () {
   console.log(`${appConfig.appName} listening on: ${appConfig.port}`)
+  console.lo('ENV: ', result)
 })
 
 /**
