@@ -56,7 +56,7 @@ require('./error-handler')(app, appConfig)
  */
 server.listen(appConfig.port, '0.0.0.0', function () {
   console.log(`${appConfig.appName} listening on: ${appConfig.port}`)
-  console.lo('ENV: ', result)
+  console.log('ENV: ', result)
 })
 
 /**
