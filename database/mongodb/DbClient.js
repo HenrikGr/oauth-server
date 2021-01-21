@@ -102,6 +102,7 @@ class DbClient {
       const client = await MongoClient.connect(dbUrl, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        retryWrites=false,
       })
 
       return client.db(dbName)
