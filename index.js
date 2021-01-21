@@ -9,14 +9,12 @@
  * Module dependency
  */
 const dotenv = require('dotenv')
-const { log, error } = require('@hgc-ab/debug-service')('middleware')
 
 /**
  * Validate .env variables
  */
 const result = dotenv.config()
 if (result.error) {
-  error('ERROR: ', result)
   throw result.error
 }
 
@@ -56,7 +54,6 @@ require('./error-handler')(app, appConfig)
  */
 server.listen(appConfig.port, '0.0.0.0', function () {
   console.log(`${appConfig.appName} listening on: ${appConfig.port}`)
-  console.log('ENV: ', process.env.NODE_ENV)
 })
 
 /**

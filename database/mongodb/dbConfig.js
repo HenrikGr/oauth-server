@@ -5,6 +5,8 @@
  * and found in the LICENSE file in the root directory of this source tree.
  */
 
+console.log('ENV:', process.env.DB_AUTH_URI)
+
 /**
  * Database connection strings map
  * 
