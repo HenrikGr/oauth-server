@@ -17,6 +17,7 @@ const oAuthConfig = {
     exposedHeaders: ['WWW-Authenticate', 'X-Accepted-OAuth-Scopes', 'X-OAuth-Scopes'],
   },
   endpoints: {
+    status: '/',
     root: (process.env.ENDPOINT_ROOT || '/oauth') + apiVersion,
     token: process.env.ENDPOINT_TOKEN || '/tokens',
     authorize: process.env.ENDPOINT_AUTHORIZE || '/authorize',

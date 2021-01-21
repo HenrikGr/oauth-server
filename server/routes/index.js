@@ -10,29 +10,9 @@
  * @private
  */
 const router = require('express').Router()
-
-/**
- * Module dependency
- * @private
- */
 const authorize = require('../middleware/authorize')
-
-/**
- * Module dependency
- * @private
- */
 const token = require('../middleware/token')
-
-/**
- * Module dependency
- * @private
- */
 const introspect = require('../middleware/introspect')
-
-/**
- * Module dependency
- * @private
- */
 const revoke = require('../middleware/revoke')
 
 /**
