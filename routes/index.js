@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const router = require('express').Router()
+
 /**
  * Set up router, endpoints, middleware and attach the router to express
  * @param app
@@ -12,8 +14,10 @@
  */
 module.exports = function (app, appConfig) {
 
-  // Status handler
-  app.use('/', (req, res) => {
-    return res.status(200).json({ status: 'UP'})
+  router.route('/').all((req, res) => {
+    return res.status(200).json({ status: 'UP'})    
   })
+
+  // Status handler
+  app.use('/', router)
 }
