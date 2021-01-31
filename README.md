@@ -6,12 +6,12 @@
 
 An express.js implementation of an OAuth2 server using;
 
-- @hgc-ab/oauth-service, an Oauth2 Library for Node.js,
+- @hgc-ab/oauth-service, an OAuth2 Library for Node.js,
 - MongoDb - for the data model injected to the @hgc-ab/oauth-service library.
 
 **Background**
 The OAuth2 server introducing an authorization layer and separating the role of the client from that of the resource
-owner.  In OAuth2, the client requests access to resources controlled by the resource owner and hosted by the resource server, 
+owner.  In OAuth2, the client requests access to resources controlled by the resource owner and hosted by the resource server,
 and is issued a different set of credentials than those of the resource owner.
 
 Instead of using the resource owner's credentials to access protected resources, the client obtains an access token -- a string denoting a
@@ -40,7 +40,7 @@ DEBUG=@hgc-ab/oauth-server:*
 NODE_ENV=development
 
 #
-# Oauth 2 server endpoints
+# OAuth2 server endpoints
 #
 API_VERSION=/v1
 ENDPOINT_ROOT=/oauth
