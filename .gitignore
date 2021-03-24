@@ -26,6 +26,7 @@ node_modules/
 .cache/
 
 # Ignore environment
+.env
 .env.development
 .env.production
 
