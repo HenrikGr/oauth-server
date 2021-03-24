@@ -9,7 +9,8 @@
  * Module dependency
  * @private
  */
-const { log, error } = require('@hgc-ab/debug-service')('middleware')
+const { createClientLogger } = require('@hgc-sdk/logger')
+const logger = createClientLogger('/oauth2-server:middleware:authorizationHandler')
 
 /**
  * Module dependency
@@ -59,17 +60,17 @@ exports = module.exports = authorize
  */
 function authorize(options = {}) {
   return async function authorizeHandler(req, res) {
-    log('authorizeHandler: started with options: ', options)
+    logger.info('started with options: ', options)
     const request = new Request(req)
     const response = new Response(res)
 
     try {
       await oAuth2Server.authorize(request, response, options)
-      log('authorizeHandler: ended gracefully')
+      logger.info('ended gracefully')
       return res.set(response.headers).status(response.status).end()
     } catch (e) {
-      error('authorizeHandler: ', e.name, e.message)
-      return res.set(response.headers).status(response.status).json(response.body)
+      logger.error(e.name, e.message)
+      return res.set(response.headers).status(response.status).json(response.body).end()
     }
   }
 }

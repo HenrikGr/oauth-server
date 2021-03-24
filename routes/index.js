@@ -4,8 +4,6 @@
  * @licence This source code is licensed under the MIT license described and found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-const { log, error } = require('@hgc-ab/debug-service')('middleware')
 const router = require('express').Router()
 
 /**
@@ -16,8 +14,7 @@ const router = require('express').Router()
 module.exports = function (app, appConfig) {
 
   router.route('/').all((req, res) => {
-    log('status: UP')
-    return res.status(200).json({ status: 'UP'})    
+    return res.status(200).json({ status: 'UP'})
   })
 
   // Status handler

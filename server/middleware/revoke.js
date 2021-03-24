@@ -9,7 +9,8 @@
  * Module dependency
  * @private
  */
-const { log, error} = require('@hgc-ab/debug-service')('middleware')
+const { createClientLogger } = require('@hgc-sdk/logger')
+const logger = createClientLogger('/oauth2-server:middleware:revokeHandlerHandler')
 
 /**
  * Module dependency
@@ -36,17 +37,17 @@ exports = module.exports = revoke
  */
 function revoke(options = {}) {
   return async function revokeHandler(req, res, next) {
-    log('revokeHandler: started with options: ', options)
+    logger.info('started with options: ', options)
     const request = new Request(req)
     const response = new Response(res)
 
     try {
       await oAuth2Server.revoke(request, response, options)
-      log('revokeHandler: ended gracefully')
-      return res.set(response.headers).status(response.status).end()
+      logger.info('ended gracefully')
+      res.set(response.headers).status(response.status).json(null).end()
     } catch (e) {
-      error('revokeHandler:', e.name, e.message)
-      return res.set(response.headers).status(response.status).json(response.body)
+      logger.error(e.name, e.message)
+      res.set(response.headers).status(response.status).json(null).end()
     }
   }
 }

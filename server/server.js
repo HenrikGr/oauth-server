@@ -25,7 +25,7 @@ const model = require('../database/model')
 
 /**
  * OAuth 2 Server
- * @ublic
+ * @public
  */
 const oAuth2Server = new OAuth2Server(model)
 

@@ -60,7 +60,7 @@ require('./error-handler')(app, appConfig)
  * Listen on incoming request
  */
 server.listen(appConfig.port, '0.0.0.0', function () {
-  console.log(`${appConfig.appName} listening on: ${appConfig.port}`)
+  console.log(`${appConfig.appName} listening on: http://localhost:${appConfig.port}`)
 })
 
 /**

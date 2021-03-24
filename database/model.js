@@ -5,14 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const OAuthModel = require('./mongodb/OAuthModel')
-const { log, error } = require('@hgc-ab/debug-service')('repository:model')
+const ClientModel = require('./mongodb/ClientModel')
+const UserModel = require('./mongodb/UserModel')
+const AccessTokenModel = require('./mongodb/AccessTokenModel')
+const RefreshTokenModel = require('./mongodb/RefreshTokenModel')
+const AuthorizationCodeModel = require('./mongodb/AuthorizationCodeModel')
+const { createClientLogger } = require('@hgc-sdk/logger')
+const logger = createClientLogger('BaseModel')
 
-/**
- * Oauth 2 MongoDb Model implementation
- * @type {OAuthModel}
- */
-const oAuthModel = new OAuthModel('auth')
+const clientModel = new ClientModel('ApplicationDb', 'clients')
+const userModel = new UserModel('UserDb', 'accounts', 'credentials', 'username')
+const authorizationCodeModel = new AuthorizationCodeModel('OAuthDb', 'codes')
+const accessTokenModel = new AccessTokenModel('OAuthDb', 'access_tokens')
+const refreshTokenModel = new RefreshTokenModel('OAuthDb', 'refresh_tokens')
 
 /**
  * Invoked to fetch client matching the clientId and clientSecret combination
@@ -22,29 +27,20 @@ const oAuthModel = new OAuthModel('auth')
  * @returns {Promise<boolean|Object>} The client or false if not found
  */
 async function getClient(clientId, clientSecret) {
-  try {
-    return await oAuthModel.getClient(clientId, clientSecret)
-  } catch (e) {
-    error('getClient: ', e.name, e.message)
-    throw e
-  }
+  logger.info(`getClient: ${clientId}`)
+  return await clientModel.validateClientBySecrets(clientId, clientSecret)
 }
 
 /**
- * Invoked to fetch a user and its credentials to validate
- * username/password combination
- *
+ * Invoked to fetch a user and its credentials
+ * to validate username/password combination
  * @param {String} username The username of the user
  * @param {String} password The password of the user
  * @returns {Promise<boolean|Object>}
  */
 async function getUser(username, password) {
-  try {
-    return await oAuthModel.getUser(username, password)
-  } catch (e) {
-    error('getUser: ', e.name, e.message)
-    throw e
-  }
+  logger.info(`getUser: ${username}`)
+  return await userModel.validateUserByPassword(username, password)
 }
 
 /**
@@ -54,12 +50,8 @@ async function getUser(username, password) {
  * @returns {Promise<boolean|Object>}
  */
 async function getUserFromClient(client) {
-  try {
-    return await oAuthModel.getUserFromClient(client)
-  } catch (e) {
-    error('getUserFromClient: ', e.name, e.message)
-    throw e
-  }
+  logger.info(`getUserFromClient: ${client.name}`)
+  return await userModel.validateUserByClient(client)
 }
 
 /**
@@ -72,11 +64,28 @@ async function getUserFromClient(client) {
  * @returns {Promise<boolean|Object>}
  */
 async function saveToken(client, user, token) {
-  try {
-    return await oAuthModel.saveToken(client, user, token)
-  } catch (e) {
-    error('saveToken: ', e.name, e.message)
-    throw e
+  logger.info(`saveToken: ${token.accessToken} for ${client.name} and ${user.username}`)
+  const accessToken = await accessTokenModel.saveAccessToken(client, user, token)
+  if (!accessToken) {
+    return false
+  }
+
+  if (token.refreshToken) {
+    const refreshToken = await refreshTokenModel.saveRefreshToken(client, user, token)
+
+    if (!refreshToken) {
+      return false
+    }
+  }
+
+  return {
+    ...token,
+    client: {
+      ...client,
+    },
+    user: {
+      ...user,
+    },
   }
 }
 
@@ -87,12 +96,8 @@ async function saveToken(client, user, token) {
  * @returns {Promise<boolean|Object>}
  */
 async function getAccessToken(accessToken) {
-  try {
-    return await oAuthModel.getAccessToken(accessToken)
-  } catch (e) {
-    error('getAccessToken:', e.name, e.message)
-    throw e
-  }
+  logger.info(`getAccessToken: ${accessToken}`)
+  return await accessTokenModel.getAccessToken(accessToken)
 }
 
 /**
@@ -102,12 +107,8 @@ async function getAccessToken(accessToken) {
  * @returns {Promise<boolean|Object>}
  */
 async function getRefreshToken(refreshToken) {
-  try {
-    return await oAuthModel.getRefreshToken(refreshToken)
-  } catch (e) {
-    error('getRefreshToken:', e.name, e.message)
-    throw e
-  }
+  logger.info(`getRefreshToken: ${refreshToken}`)
+  return await refreshTokenModel.getRefreshToken(refreshToken)
 }
 
 /**
@@ -117,12 +118,8 @@ async function getRefreshToken(refreshToken) {
  * @returns {Promise<boolean>}
  */
 async function revokeAccessToken(token) {
-  try {
-    return await oAuthModel.revokeAccessToken(token)
-  } catch (e) {
-    error('revokeAccessToken:', e.name, e.message)
-    throw e
-  }
+  logger.info(`revokeAccessToken: ${token.accessToken}`)
+  return await accessTokenModel.revokeAccessToken(token)
 }
 
 /**
@@ -132,28 +129,20 @@ async function revokeAccessToken(token) {
  * @returns {Promise<boolean>}
  */
 async function revokeRefreshToken(token) {
-  try {
-    return await oAuthModel.revokeRefreshToken(token)
-  } catch (e) {
-    error('revokeRefreshToken:', e.name, e.message)
-    throw e
-  }
+  logger.info(`revokeRefreshToken: ${token.refreshToken}`)
+  return await refreshTokenModel.revokeRefreshToken(token)
 }
 
 /**
- * Invoked to retrieve an existing authorization code 
+ * Invoked to retrieve an existing authorization code
  * previously saved through saveAuthorizationCode
  *
- * @param {String} authorizationCode The authorization code
+ * @param {string} authorizationCode The authorization code
  * @returns {Promise<boolean|Object>}
  */
 async function getAuthorizationCode(authorizationCode) {
-  try {
-    return await oAuthModel.getAuthorizationCode(authorizationCode)
-  } catch (e) {
-    error('getAuthorizationCode: ', e.name, e.message)
-    throw e
-  }
+  logger.info(`getAuthorizationCode: ${authorizationCode}`)
+  return await authorizationCodeModel.getAuthorizationCode(authorizationCode)
 }
 
 /**
@@ -165,12 +154,8 @@ async function getAuthorizationCode(authorizationCode) {
  * @returns {Promise<boolean|Object>}
  */
 async function saveAuthorizationCode(client, user, code) {
-  try {
-    return await oAuthModel.saveAuthorizationCode(client, user, code)
-  } catch (e) {
-    error('saveAuthorizationCode: ', e.name, e.message)
-    throw e
-  }
+  logger.info(`saveAuthorizationCode: ${code.authorizationCode}`)
+  return await authorizationCodeModel.saveAuthorizationCode(client, user, code)
 }
 
 /**
@@ -180,26 +165,8 @@ async function saveAuthorizationCode(client, user, code) {
  * @returns {Promise<boolean>}
  */
 async function revokeAuthorizationCode(code) {
-  try {
-    return await oAuthModel.revokeAuthorizationCode(code)
-  } catch (e) {
-    error('revokeAuthorizationCode: ', e.name, e.message)
-    throw e
-  }
-}
-
-/**
- * Partially match scope with target scope
- *
- * @param {String} scope - The scope
- * @param {Array|String} targetScope - The target scope
- * @returns {String} Partially matched scope - if no match an empty string
- */
-function scopePartiallyMatch(scope, targetScope) {
-  return scope
-    .split(' ')
-    .filter((s) => targetScope.indexOf(s) >= 0)
-    .join(' ')
+  logger.info(`revokeAuthorizationCode: ${code.code}`)
+  return await authorizationCodeModel.revokeAuthorizationCode(code)
 }
 
 /**
@@ -207,13 +174,31 @@ function scopePartiallyMatch(scope, targetScope) {
  *
  * @param {String} scope - The scope
  * @param {Array} targetScope - The target scope
- * @returns {boolean|{String}} false if not a match
+ * @param scope
+ * @param targetScope
+ * @return {boolean|*}
  */
 function scopeMatch(scope, targetScope) {
+  if (scope === '') {
+    return false
+  }
+
   if (!scope.split(' ').every((s) => targetScope.indexOf(s) >= 0)) {
     return false
   }
   return scope
+}
+
+/**
+ * Partially match scope with target scope
+ */
+function scopePartiallyMatch(scope, targetScope) {
+  if (scope === '') {
+    return ''
+  }
+
+  return scope.split(' ').filter((s) => targetScope.indexOf(s) >= 0)
+  //.join(' ')
 }
 
 /**
@@ -234,67 +219,62 @@ function scopeMatch(scope, targetScope) {
  * @returns {Promise<String|string>}
  */
 async function validateScope(client, user, scope) {
-  try {
-    log('validateScope:', `client:${client.scope}, user:${user.scope}, requested:${scope}`)
-    // Get all valid scopes
-    const VALID_SCOPES = [
-      'admin',
-      'profile',
-      'client:read',
-      'client:write',
-      'user:read',
-      'user-write',
-    ]
+  logger.info(`validateScope: client:${client.scope}, user:${user.scope}, requested:${scope}`)
+  // Get all valid scopes
+  const VALID_SCOPES = [
+    'admin',
+    'profile',
+    'client:read',
+    'client:write',
+    'user:read',
+    'user-write',
+  ]
 
+  /**
+   * Match client scope vs valid scopes to check if client in invalid
+   */
+  let clientScopes = scopePartiallyMatch(client.scope, VALID_SCOPES)
+  if (clientScopes.length === 0) {
+    logger.error('Invalid client: client scope(s) is not valid', client.scope)
+    return ''
+  }
+
+  /**
+   * If no requested scope was in the authentication request
+   */
+  if (scope === undefined) {
     /**
-     * Match client scope vs valid scopes to check if client in invalid
+     * Match the user scope vs the client scope
+     * Return matched user scope if any
      */
-    let clientScopes = scopePartiallyMatch(client.scope, VALID_SCOPES)
-    if (clientScopes === '') {
-      error('Invalid client: client scope(s) is not valid', client.scope)
-      return clientScopes
-    }
-
-    /**
-     * If no requested scope was in the authentication request
-     */
-    if (scope === undefined) {
-      /**
-       * Match the user scope vs the client scope
-       * Return matched user scope if any
-       */
-      let userScope = scopePartiallyMatch(user.scope, clientScopes)
-      if (userScope === '') {
-        error('Invalid user: user scope(s) where not valid', user.scope)
-      } else {
-        log('validateScope:', userScope)
-      }
-
-      return userScope
+    let userScope = scopePartiallyMatch(user.scope, clientScopes)
+    if (userScope.length === 0) {
+      logger.error('Invalid user: user scope(s) where not valid', user.scope)
     } else {
-      /**
-       * Match the user scope vs the client scope
-       * Match the requested scope vs the user scope
-       * Return matched requested scope if any
-       */
-      let userScope = scopePartiallyMatch(user.scope, clientScopes)
-      if (userScope === '') {
-        error('Invalid user: user scope(s) where not valid', user.scope)
-        return userScope
-      }
-
-      let requestScope = scopePartiallyMatch(scope, userScope)
-      if (requestScope === '') {
-        error('Invalid scope: requested scope is invalid', scope)
-        return requestScope
-      }
-
-      log('validateScope:', requestScope)
-      return requestScope
+      logger.info('validateScope:', userScope.join(' '))
     }
-  } catch (e) {
-    error('validateScope - error: ', e.name, e.message)
-    throw e
+
+    return userScope.join(' ')
+  } else {
+    /**
+     * Match the user scope vs the client scope
+     * Match the requested scope vs the user scope
+     * Return matched requested scope if any
+     */
+    let userScope = scopePartiallyMatch(user.scope, clientScopes)
+    if (userScope.length === 0) {
+      logger.error('Invalid user: user scope(s) where not valid', user.scope)
+      return ''
+    }
+
+    let requestScope = scopePartiallyMatch(scope, userScope)
+    if (requestScope.length === 0) {
+      logger.error('Invalid scope: requested scope is invalid', scope)
+      return ''
+    }
+
+    logger.info('validateScope:', requestScope)
+    return requestScope.join(' ')
   }
 }
 
@@ -324,29 +304,24 @@ function isNotAdminScope(scope) {
  * @remarks Is used authenticate() middleware
  */
 async function verifyScope(token, scope) {
-  try {
-    log('verifyScope: ', token.scope, scope)
-    if (!token.scope) {
-      return false
-    }
-    const requestedScopes = scope.split(' ')
-    const authorizedScopes = token.scope.split(' ')
-
-    /**
-     * If token scope contains admin scope - allow all
-     */
-    if (!authorizedScopes.every(isNotAdminScope)) {
-      log('authorized token scope contained admin')
-      return true
-    }
-
-    const result = authorizedScopes.every((s) => requestedScopes.indexOf(s) >= 0)
-    log('validating authorized scope vs requested scope')
-    return result
-  } catch (e) {
-    error('verifyScope: ', e.name, e.message, e.errors)
-    throw e
+  logger.info(`verifyScope: token scope:${token.scope}, requested scope:${scope}`)
+  if (!token.scope) {
+    return false
   }
+  const requestedScopes = scope.split(' ')
+  const authorizedScopes = token.scope.split(' ')
+
+  /**
+   * If token scope contains admin scope - allow all
+   */
+  if (!authorizedScopes.every(isNotAdminScope)) {
+    logger.verbose('authorized token scope contained admin')
+    return true
+  }
+
+  const result = authorizedScopes.every((s) => requestedScopes.indexOf(s) >= 0)
+  logger.info('validating authorized scope vs requested scope')
+  return result
 }
 
 /**

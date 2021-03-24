@@ -9,7 +9,8 @@
  * Module dependency
  * @private
  */
-const { log, error } = require('@hgc-ab/debug-service')('middleware')
+const { createClientLogger } = require('@hgc-sdk/logger')
+const logger = createClientLogger('/oauth2-server:middleware:authenticationHandler')
 
 /**
  * Module dependency
@@ -43,7 +44,7 @@ exports = module.exports = authenticate
  */
 function authenticate(options = {}) {
   return async function authenticateHandler(req, res, next) {
-    log('authenticateHandler: started with options: ', options)
+    logger.info('started with options: ', options)
     const request = new Request(req)
     const response = new Response(res)
 
@@ -54,11 +55,11 @@ function authenticate(options = {}) {
        */
       res.set(response.headers)
       Object.assign(req, { token: token })
-      log('authenticateHandler: ended gracefully')
+      logger.info('ended gracefully')
       next()
     } catch (e) {
-      error('authenticateHandler:', e.name, e.message)
-      return res.set(response.headers).status(response.status).json(response.body)
+      logger.error(e.name, e.message)
+      return res.set(response.headers).status(response.status).json(response.body).end()
     }
   }
 }

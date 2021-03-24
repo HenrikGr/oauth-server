@@ -22,20 +22,20 @@ const revoke = require('../middleware/revoke')
  */
 module.exports = function (app, appConfig) {
   const { oAuthConfig } = appConfig
-  const { endpoints, tokenOptions, authorizeOptions } = oAuthConfig
+  const { endpoints } = oAuthConfig
 
   /**
    * Endpoint to request access tokens for an authorized request
    */
-  router.route(endpoints.token).post(token(tokenOptions))
+  router.route(endpoints.token).post(token())
 
   /**
    * Endpoint to authorize a request for an access token
    */
   router
     .route(endpoints.authorize)
-    .get(authorize(authorizeOptions))
-    .post(authorize(authorizeOptions))
+    .get(authorize())
+    .post(authorize())
 
   /**
    * Endpoint to introspect an access token status

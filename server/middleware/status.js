@@ -9,7 +9,8 @@
  * Module dependency
  * @private
  */
-const { log, error } = require('@hgc-ab/debug-service')('middleware')
+const { createClientLogger } = require('@hgc-sdk/logger')
+const logger = createClientLogger('/oauth2-server:middleware:statusHandler')
 
 /**
  * Expose status middleware
@@ -24,7 +25,7 @@ exports = module.exports = status
  */
 function status(options = {}) {
   return async function statusHandler(req, res, next) {
-    log('statusHandler: started with options: ', options)
-    return res.status(200).json({ status: 'ok'})
+    logger.info('started with options: ', options)
+    res.status(200).json({ status: 'ok'}).end()
   }
 }

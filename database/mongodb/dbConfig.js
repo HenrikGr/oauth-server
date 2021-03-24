@@ -7,12 +7,12 @@
 
 /**
  * Database connection strings map
- * 
- * @type {{auth: string, account: string}}
+ * @type {{UserDb: *, ApplicationDb: *, OAuthDb: *}}
  */
 const connectionUrlMap = {
-  auth: process.env.DB_AUTH_URI,
-  account: process.env.DB_ACCOUNT_URI,
+  OAuthDb: process.env.DB_OAUTH_URI,
+  UserDb: process.env.DB_USER_URI,
+  ApplicationDb: process.env.DB_APPLICATION_URI,
 }
 
 module.exports = connectionUrlMap

@@ -4,7 +4,9 @@
  * @licence This source code is licensed under the MIT license described and found in the
  * LICENSE file in the root directory of this source tree.
  */
-const { log } = require('@hgc-ab/debug-service')('http')
+
+const { createClientLogger } = require('@hgc-sdk/logger')
+const logger = createClientLogger('/oauth2-server:http')
 
 /**
  * Load middleware to express
@@ -14,7 +16,7 @@ const { log } = require('@hgc-ab/debug-service')('http')
 module.exports = function (app, appConfig) {
   // Debug incoming request
   app.use((req, res, next) => {
-    log(req.protocol + '://' + req.get('host') + req.originalUrl)
+    logger.info(req.protocol + '://' + req.get('host') + req.originalUrl)
     next()
   })
 

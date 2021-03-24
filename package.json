@@ -25,9 +25,9 @@
     "test": "echo \"No test specified\""
   },
   "dependencies": {
-    "@hgc-ab/crypto-service": "^1.0.5",
-    "@hgc-ab/debug-service": "^1.0.15",
-    "@hgc-ab/oauth-service": "^0.0.22",
+    "@hgc-ab/oauth-service": "^1.0.4",
+    "@hgc-sdk/crypto": "^1.0.0",
+    "@hgc-sdk/logger": "^1.0.0",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
