@@ -1,5 +1,7 @@
 FROM node:12-alpine
 
+ARG NPM_TOKEN
+
 #
 # RUN is an image build step, the state of the container after a RUN command will be
 # committed to the docker image
@@ -28,6 +30,9 @@ COPY package*.json ./
 USER node
 
 # Run the command inside your image filesystem.
+# This Dockerfile creates the .npmrc file using an NPM_TOKEN environment variable that we pass
+# in as a build argument (ARG NPM_TOKEN).
+# RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
 RUN npm install
 
 # # Copy the rest of your app's source code from your host to your image filesystem.

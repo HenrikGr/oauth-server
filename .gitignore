@@ -27,7 +27,7 @@ node_modules/
 
 # Ignore environment
 .env
-.env.development
+.env
 .env.production
 
 # IBM Cloud Foundry

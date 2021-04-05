@@ -17,6 +17,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
+    "build docker image": "docker build --build-arg NPM_TOKEN=fdd28124-644c-4e1d-8a2c-0c84f16068fd .",
     "docker-compose build app": "docker-compose build app",
     "docker-compose up app": "docker-compose down && docker-compose up app",
     "docker-compose prune": "docker-compose down && docker system prune -a && docker volume prune",
@@ -38,6 +39,7 @@
     "mongodb": "^3.6.3"
   },
   "devDependencies": {
-    "@types/mongodb": "^3.6.3"
+    "@types/mongodb": "^3.6.3",
+    "cross-env": "^7.0.3"
   }
 }

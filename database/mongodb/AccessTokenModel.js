@@ -53,7 +53,7 @@ class AccessTokenModel extends DbClient {
 
       let collection = await super.connectCollection(this.collectionName)
       const accessToken = await collection.insertOne(extendedDocument)
-      return Boolean(accessToken.insertedCount === 1)
+      return Boolean(accessToken?.insertedCount === 1)
     }
      catch (e) {
       logger.error('saveAccessToken: ', e.name, e.message)
@@ -69,12 +69,17 @@ class AccessTokenModel extends DbClient {
       const query = { token: accessToken }
       const collection = await super.connectCollection(this.collectionName)
       const result = await collection.findOne(query, options)
-      const { user, client } = result
+
+      if (!result) {
+        return false
+      }
+
+      const { user, client, token, expiresAt, scope } = result
 
       return {
-        accessToken: result.token,
-        accessTokenExpiresAt: result.expiresAt,
-        scope: result.scope,
+        accessToken: token,
+        accessTokenExpiresAt: expiresAt,
+        scope: scope,
         client: {
           id: client._id.toString(),
           name: client.name,
@@ -110,7 +115,7 @@ class AccessTokenModel extends DbClient {
 
       const collection = await super.connectCollection(this.collectionName)
       const result = await collection.deleteOne(filter, options)
-      return Boolean(result.deletedCount === 1)
+      return Boolean(result?.deletedCount === 1)
     } catch (e) {
       logger.error('revokeAccessToken:', e.name, e.message)
       throw e

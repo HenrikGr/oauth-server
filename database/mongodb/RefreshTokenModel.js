@@ -53,7 +53,7 @@ class RefreshTokenModel extends DbClient {
 
       let collection = await super.connectCollection(this.collectionName)
       const refreshToken = await collection.insertOne(extendedDocument)
-      return Boolean(refreshToken.insertedCount === 1)
+      return Boolean(refreshToken?.insertedCount === 1)
     } catch (e) {
       logger.error('saveRefreshToken: ', e.name, e.message)
       throw e
@@ -69,12 +69,16 @@ class RefreshTokenModel extends DbClient {
 
       const collection = await super.connectCollection(this.collectionName)
       const result = await collection.findOne(query, options)
-      const { user, client } = result
+      if (!result) {
+        return false
+      }
+
+      const { user, client, token, expiresAt, scope } = result
 
       return {
-        refreshToken: result.token,
-        refreshTokenExpiresAt: result.expiresAt,
-        scope: result.scope,
+        refreshToken: token,
+        refreshTokenExpiresAt: expiresAt,
+        scope: scope,
         client: {
           id: client._id.toString(),
           name: client.name,
@@ -110,7 +114,7 @@ class RefreshTokenModel extends DbClient {
 
       const collection = await super.connectCollection(this.collectionName)
       const result = await collection.deleteOne(filter, options)
-      return Boolean(result.deletedCount === 1)
+      return Boolean(result?.deletedCount === 1)
     } catch (e) {
       logger.error('revokeRefreshToken:', e.name, e.message)
       throw e

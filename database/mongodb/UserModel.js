@@ -20,8 +20,8 @@ class UserModel extends DbClient {
     this.accountCollectionName = accountCollectionName
   }
 
-  async validateUserByPassword(username, password) {
-    logger.verbose('validateUserByPassword:', `${username}`)
+  async getUser(username, password) {
+    logger.verbose('getUser:', `${username}`)
 
     try {
       const query = { username: username }
@@ -45,7 +45,7 @@ class UserModel extends DbClient {
       }
 
     } catch (e) {
-      logger.error('validateUserByPassword: ', e.name, e.message)
+      logger.error('getUser: ', e.name, e.message)
       throw e
     }
   }
@@ -55,9 +55,9 @@ class UserModel extends DbClient {
    * @param {object} client The client previously obtained through getClient
    * @returns {Promise<boolean|Object>}
    */
-  async validateUserByClient(client) {
+  async getUserFromClient(client) {
     try {
-      logger.verbose(`validateUserByClient: user ${client.user.username} for ${client.name}`)
+      logger.verbose(`getUserFromClient: user ${client.user.username} for ${client.name}`)
 
       const options = {}
       const { user: clientUser } = client
@@ -73,7 +73,7 @@ class UserModel extends DbClient {
           scope: user['scope'],
         }
     } catch (e) {
-      logger.error('getAccountFromClient: ', e.name, e.message)
+      logger.error('getUserFromClient: ', e.name, e.message)
       throw e
     }
   }

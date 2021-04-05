@@ -40,7 +40,7 @@ async function getClient(clientId, clientSecret) {
  */
 async function getUser(username, password) {
   logger.info(`getUser: ${username}`)
-  return await userModel.validateUserByPassword(username, password)
+  return await userModel.getUser(username, password)
 }
 
 /**
@@ -51,7 +51,7 @@ async function getUser(username, password) {
  */
 async function getUserFromClient(client) {
   logger.info(`getUserFromClient: ${client.name}`)
-  return await userModel.validateUserByClient(client)
+  return await userModel.getUserFromClient(client)
 }
 
 /**
