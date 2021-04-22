@@ -5,23 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/**
- * Module dependency
- * @private
- */
 const { createClientLogger } = require('@hgc-sdk/logger')
 const logger = createClientLogger('/oauth2-server:middleware:introspectionHandler')
-
-/**
- * Module dependency
- * @private
- */
 const oAuth2Server = require('../server')
-
-/**
- * Module dependency
- * @private
- */
 const { Request, Response } = oAuth2Server
 
 /**
@@ -31,9 +17,9 @@ exports = module.exports = introspect
 
 /**
  * Introspect a token status
- *
- * @param {Object} options Optional settings
- * @param {Boolean} options.isClientSecretRequired Is client secret required
+ * @param options
+ * @param {boolean} options.isClientSecretRequired Is client secret required
+ * @return {(function(*=, *=, *): Promise<void>)|*}
  */
 function introspect(options = {}) {
   return async function introspectHandler(req, res, next) {

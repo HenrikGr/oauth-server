@@ -5,23 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/**
- * Module dependency
- * @private
- */
 const { createClientLogger } = require('@hgc-sdk/logger')
 const logger = createClientLogger('/oauth2-server:middleware:tokenHandler')
-
-/**
- * Module dependency
- * @private
- */
 const oAuth2Server = require('../server')
-
-/**
- * Module dependency
- * @private
- */
 const { Request, Response } = oAuth2Server
 
 /**
@@ -31,13 +17,13 @@ exports = module.exports = token
 
 /**
  * Retrieves a new token for an authorized token request
- *
- * @param {Object} options Optional settings
- * @param {Number} options.accessTokenLifeTime Lifetime of access tokens in seconds
- * @param {Number} options.refreshTokenLifetime Lifetime of refresh tokens in seconds
- * @param {Object} options.requireClientAuthentication Require a client secret
- * @param {Boolean} options.alwaysIssueNewRefreshToken Always issue a new refresh token
- * @param {Object} options.extendedGrantTypes Use extended grant types
+ * @param options Optional settings
+ * @param {number} options.accessTokenLifeTime Lifetime of access tokens in seconds
+ * @param {number} options.refreshTokenLifetime Lifetime of refresh tokens in seconds
+ * @param {object} options.requireClientAuthentication Require a client secret
+ * @param {boolean} options.alwaysIssueNewRefreshToken Always issue a new refresh token
+ * @param {object} options.extendedGrantTypes Use extended grant types
+ * @return {(function(*=, *=): Promise<void>)|*}
  */
 function token(options = {}) {
   return async function tokenHandler(req, res) {

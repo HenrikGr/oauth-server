@@ -5,10 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/**
- * Module dependency
- * @private
- */
 const { createClientLogger } = require('@hgc-sdk/logger')
 const logger = createClientLogger('/oauth2-server:middleware:statusHandler')
 
@@ -19,9 +15,9 @@ exports = module.exports = status
 
 /**
  * Handle app status
- *
- * @param {Object} options Optional settings
+ * @param options Optional settings
  * @param {Boolean} options.isClientSecretRequired Is client secret required
+ * @return {(function(*, *, *): Promise<void>)|*}
  */
 function status(options = {}) {
   return async function statusHandler(req, res, next) {

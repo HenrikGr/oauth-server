@@ -1,10 +1,12 @@
-FROM node:12-alpine
+FROM node:14-alpine
 
+# Argument passed in either via Docker-compose or shell
+# We need an NPM_TOKEN from the environment in order to install private NPM packages
 ARG NPM_TOKEN
 
 #
 # RUN is an image build step, the state of the container after a RUN command will be
-# committed to the docker image
+# committed to the docker image.
 #
 # To fine-tune the permissions on our application code in the container, let’s create the
 # node_modules subdirectory in /home/node along with the app directory.
@@ -29,10 +31,11 @@ COPY package*.json ./
 # the contents of the node_modules directory, switch the user to node before running npm install
 USER node
 
+# Create a .npmrc file with an NPM_TOKEN in the app directory to be able to install
+# private packages
+RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+
 # Run the command inside your image filesystem.
-# This Dockerfile creates the .npmrc file using an NPM_TOKEN environment variable that we pass
-# in as a build argument (ARG NPM_TOKEN).
-# RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
 RUN npm install
 
 # # Copy the rest of your app's source code from your host to your image filesystem.

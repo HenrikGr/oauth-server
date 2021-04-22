@@ -5,23 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/**
- * Module dependency
- * @private
- */
 const { createClientLogger } = require('@hgc-sdk/logger')
 const logger = createClientLogger('/oauth2-server:middleware:authenticationHandler')
-
-/**
- * Module dependency
- * @private
- */
 const oAuth2Server = require('../server')
-
-/**
- * Module dependency
- * @private
- */
 const { Request, Response } = oAuth2Server
 
 /**
@@ -36,11 +22,11 @@ exports = module.exports = authenticate
  * On successful authentication it will attach the token
  * on the request object and call next middleware
  *
- * @public
- * @param {Object} options Optional settings
- * @param {Boolean} options.addAcceptedScopesHeader Add accepted scope in header
- * @param {Boolean} options.addAuthorizedScopesHeader Add authorized scopes in header
- * @param {Boolean} options.allowBearerTokensInQueryString Allow bearer token in query string
+ * @param {object} options Optional settings
+ * @param {boolean} options.addAcceptedScopesHeader Add accepted scope in header
+ * @param {boolean} options.addAuthorizedScopesHeader Add authorized scopes in header
+ * @param {boolean} options.allowBearerTokensInQueryString Allow bearer token in query string
+ * @return {(function(*=, *=, *): Promise<*|undefined>)|*}
  */
 function authenticate(options = {}) {
   return async function authenticateHandler(req, res, next) {
@@ -50,9 +36,6 @@ function authenticate(options = {}) {
 
     try {
       const token = await oAuth2Server.authenticate(request, response, options)
-      /**
-       * Set updated response headers
-       */
       res.set(response.headers)
       Object.assign(req, { token: token })
       logger.info('ended gracefully')

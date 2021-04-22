@@ -16,13 +16,13 @@
   ],
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "build docker image": "docker build --build-arg NPM_TOKEN=fdd28124-644c-4e1d-8a2c-0c84f16068fd .",
-    "docker-compose build app": "docker-compose build app",
-    "docker-compose up app": "docker-compose down && docker-compose up app",
-    "docker-compose prune": "docker-compose down && docker system prune -a && docker volume prune",
-    "docker build image": "docker build --tag hgcab/oauth-server:v1.0.1 .",
-    "docker run container": "docker run --publish 6001:6001 --detach --name hgcab hgcab/oauth-server:v1.0.1",
+    "start": "nodemon index.js",
+    "docker-config": "docker-compose config",
+    "docker-start": "docker-compose up app",
+    "docker-restart": "docker-compose down && docker-compose up -d && docker logs -f server_app_1",
+    "docker-rebuild": "docker-compose down && docker-compose up --build -d && docker logs -f server_app_1",
+    "docker-clean": "docker rmi -f $(docker images -q --filter 'dangling=true') && docker rm -f $(docker ps -a -q)",
+    "docker-prune": "docker-compose down && docker system prune -a && docker volume prune",
     "test": "echo \"No test specified\""
   },
   "dependencies": {
@@ -36,10 +36,11 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^4.4.1",
-    "mongodb": "^3.6.3"
+    "mongodb": "^3.6.6",
+    "nodemon": "^2.0.7"
   },
   "devDependencies": {
-    "@types/mongodb": "^3.6.3",
+    "@types/mongodb": "^3.6.12",
     "cross-env": "^7.0.3"
   }
 }

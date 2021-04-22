@@ -20,18 +20,7 @@ class DbClient {
    * @param {String} dbName The name of the database
    */
   constructor(dbName) {
-    /**
-     * Initial dbName
-     * @private
-     * @type {String}
-     */
     this.dbName = dbName
-
-    /**
-     * Database connection string map
-     * Should contain supported databases only
-     * @type {{UserDb: *, ApplicationDb: *, OAuthDb: *}}
-     */
     this.dbConnectionUrlMap = connectionUrlMap
   }
 

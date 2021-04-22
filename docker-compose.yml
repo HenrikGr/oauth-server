@@ -4,11 +4,12 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile-dev
-    image: "hgcab/oauth-server:${APP_VERSION}"
+      dockerfile: Dockerfile
+      args:
+        NPM_TOKEN: $NPM_TOKEN
+    image: "$APP_NAME:$APP_VERSION"
     environment:
-      - NODE_ENV=${NODE_ENV}
-      - DB_AUTH_URI=${DB_AUTH_URI}
+      - NODE_ENV=$NODE_ENV
     volumes:
       - .:/home/node/app
     ports:

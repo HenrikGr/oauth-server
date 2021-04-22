@@ -51,12 +51,12 @@ exports = module.exports = authorize
  *   }
  * }
  *
- * @public
- * @param {Object} options Optional settings
- * @param {Object} options.authenticateHandler Custom authentication handler
- * @param {Boolean} options.allowEmptyState Allow clients to specify an empty state
- * @param {Number} options.authorizationCodeLifetime Lifetime of authorization codes in seconds
- * @param {Number} options.accessTokenLifetime Lifetime of implicit grant access token in seconds
+ * @param {object} options Optional settings
+ * @param {object} options.authenticateHandler Custom authentication handler
+ * @param {boolean} options.allowEmptyState Allow clients to specify an empty state
+ * @param {number} options.authorizationCodeLifetime Lifetime of authorization codes in seconds
+ * @param {number} options.accessTokenLifetime Lifetime of implicit grant access token in seconds
+ * @return {(function(*=, *=): Promise<*|undefined>)|*}
  */
 function authorize(options = {}) {
   return async function authorizeHandler(req, res) {
